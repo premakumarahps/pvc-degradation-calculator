@@ -25,9 +25,8 @@ venv/
 ENV/
 build/
 develop-eggs/
-dist/
-downloads/
-eggs/
+/downloads/
+!web/public/downloads/
 .eggs/
 lib/
 lib64/
