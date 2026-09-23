@@ -98,7 +98,7 @@ def run_gui():
     app.setStyleSheet(LIGHT_MODERN_STYLESHEET)
 
     window = MainWindow()
-    window.show()
+    window.showMaximized()
 
     sys.exit(app.exec())
 

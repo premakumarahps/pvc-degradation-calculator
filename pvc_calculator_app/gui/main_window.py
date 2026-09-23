@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QLabel, QTabWidget, QFrame, QStatusBar
 )
 from PyQt6.QtGui import QIcon, QPixmap
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QEvent
 
 from gui.tabs import CalculatorTab, PlotterTab, AnalysisTab, TheoryTab
 
@@ -18,8 +18,13 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PVC Degradation Kinetics & HALS Formulation Optimizer")
-        self.resize(1140, 800)
-        self.setMinimumSize(960, 650)
+
+        # Disable maximize/restore button hint so user cannot toggle window sizing
+        self.setWindowFlags(
+            Qt.WindowType.Window |
+            Qt.WindowType.WindowMinimizeButtonHint |
+            Qt.WindowType.WindowCloseButtonHint
+        )
 
         # Set Window Icon
         icon_path = os.path.join(os.path.dirname(__file__), "assets", "calculator_icon.png")
@@ -27,6 +32,14 @@ class MainWindow(QMainWindow):
             self.setWindowIcon(QIcon(icon_path))
 
         self.init_ui(icon_path)
+        self.showMaximized()
+
+    def changeEvent(self, event):
+        """Enforces that the window remains permanently maximized unless minimized to taskbar."""
+        if event.type() == QEvent.Type.WindowStateChange:
+            if not self.isMinimized() and not self.isMaximized():
+                self.setWindowState(Qt.WindowState.WindowMaximized)
+        super().changeEvent(event)
 
     def init_ui(self, icon_path: str):
         # Central widget
