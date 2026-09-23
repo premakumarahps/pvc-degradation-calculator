@@ -71,11 +71,11 @@ def run_gui():
     from PyQt6.QtWidgets import QApplication
     from PyQt6.QtCore import Qt
     from gui.main_window import MainWindow
-    from gui.theme import MODERN_DARK_STYLESHEET
+    from gui.theme import LIGHT_MODERN_STYLESHEET
 
     app = QApplication(sys.argv)
     app.setApplicationName("PVC Degradation Optimizer")
-    app.setStyleSheet(MODERN_DARK_STYLESHEET)
+    app.setStyleSheet(LIGHT_MODERN_STYLESHEET)
 
     window = MainWindow()
     window.show()

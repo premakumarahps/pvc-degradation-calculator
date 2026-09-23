@@ -1,6 +1,6 @@
 """
 Theory & Mathematical Models Tab.
-Presents the scientific background, reaction mechanisms, ODEs, and literature references.
+Presents the scientific background, reaction mechanisms, ODEs, and literature references in a light modern format.
 """
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextBrowser
@@ -13,60 +13,67 @@ THEORY_HTML = """
 <style>
     body {
         font-family: 'Segoe UI', Arial, sans-serif;
-        color: #e2e8f0;
-        background-color: #0b0f19;
-        line-height: 1.6;
-        padding: 16px;
+        color: #0f172a;
+        background-color: #ffffff;
+        line-height: 1.65;
+        padding: 18px 24px;
     }
     h1, h2, h3 {
-        color: #38bdf8;
-        border-bottom: 1px solid #1e293b;
-        padding-bottom: 6px;
+        color: #0f172a;
+        border-bottom: 1.5px solid #e2e8f0;
+        padding-bottom: 8px;
     }
-    h1 { font-size: 22px; }
-    h2 { font-size: 17px; margin-top: 20px; color: #7dd3fc; }
-    h3 { font-size: 14px; color: #a5f3fc; }
+    h1 { font-size: 22px; color: #0284c7; }
+    h2 { font-size: 17px; margin-top: 24px; color: #0369a1; }
+    h3 { font-size: 14px; color: #0284c7; }
     code, pre {
-        background-color: #0f172a;
-        color: #38bdf8;
-        border: 1px solid #1e293b;
-        border-radius: 4px;
-        padding: 2px 6px;
+        background-color: #f8fafc;
+        color: #0284c7;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 3px 8px;
         font-family: Consolas, monospace;
+        font-size: 12.5px;
     }
     pre {
-        padding: 12px;
+        padding: 14px;
         overflow-x: auto;
+        color: #0f172a;
+        line-height: 1.5;
     }
     .highlight-card {
-        background-color: #0f172a;
-        border-left: 4px solid #38bdf8;
-        padding: 12px;
-        border-radius: 4px;
-        margin: 12px 0;
+        background-color: #f0f9ff;
+        border-left: 4px solid #0284c7;
+        padding: 14px 18px;
+        border-radius: 6px;
+        margin: 14px 0;
+        color: #0369a1;
+        font-size: 13.5px;
     }
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 14px 0;
+        margin: 16px 0;
     }
     th, td {
-        border: 1px solid #233554;
-        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        padding: 10px 14px;
         text-align: left;
+        font-size: 13px;
     }
     th {
-        background-color: #1e293b;
-        color: #38bdf8;
+        background-color: #f8fafc;
+        color: #0f172a;
+        font-weight: 700;
     }
     tr:nth-child(even) {
-        background-color: #0d1526;
+        background-color: #f8fafc;
     }
     .badge {
         display: inline-block;
-        background-color: #0284c7;
-        color: white;
-        padding: 2px 8px;
+        background-color: #e0f2fe;
+        color: #0369a1;
+        padding: 2px 10px;
         border-radius: 12px;
         font-size: 11px;
         font-weight: bold;
@@ -186,9 +193,10 @@ class TheoryTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setContentsMargins(18, 18, 18, 18)
 
         browser = QTextBrowser()
+        browser.setStyleSheet("background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px;")
         browser.setOpenExternalLinks(True)
         browser.setHtml(THEORY_HTML)
         layout.addWidget(browser)

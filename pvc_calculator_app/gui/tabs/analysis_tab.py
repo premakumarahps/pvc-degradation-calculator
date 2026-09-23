@@ -1,6 +1,6 @@
 """
 Batch Sensitivity Analysis Tab.
-Simulates a spectrum of stabilizer dosages with background threading and Excel export.
+Light modern styling with spacious inputs and Excel export.
 """
 
 from PyQt6.QtWidgets import (
@@ -48,38 +48,52 @@ class AnalysisTab(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout(self)
-        layout.setSpacing(14)
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(16)
+        layout.setContentsMargins(24, 22, 24, 22)
 
         # Controls Group
         ctrl_group = QGroupBox("Batch Degradation Analysis Settings")
         grid_layout = QHBoxLayout(ctrl_group)
-        grid_layout.setSpacing(12)
+        grid_layout.setSpacing(16)
+        grid_layout.setContentsMargins(18, 22, 18, 18)
 
         # Hours
         v_h = QVBoxLayout()
-        v_h.addWidget(QLabel("Outdoor Exposure (Hours):"))
+        lbl_h = QLabel("Outdoor Exposure (Hours):")
+        lbl_h.setStyleSheet("font-weight: 700; color: #0f172a;")
         self.input_hours = QLineEdit("1500")
+        self.input_hours.setFixedHeight(42)
+        self.input_hours.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        v_h.addWidget(lbl_h)
         v_h.addWidget(self.input_hours)
         grid_layout.addLayout(v_h)
 
         # Max Dosage
         v_m = QVBoxLayout()
-        v_m.addWidget(QLabel("Max Stabilizer (wt.%):"))
+        lbl_m = QLabel("Max Stabilizer (wt.%):")
+        lbl_m.setStyleSheet("font-weight: 700; color: #0f172a;")
         self.input_max = QLineEdit("0.8")
+        self.input_max.setFixedHeight(42)
+        self.input_max.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        v_m.addWidget(lbl_m)
         v_m.addWidget(self.input_max)
         grid_layout.addLayout(v_m)
 
         # Samples
         v_s = QVBoxLayout()
-        v_s.addWidget(QLabel("Sample Resolutions:"))
+        lbl_s = QLabel("Sample Resolutions:")
+        lbl_s.setStyleSheet("font-weight: 700; color: #0f172a;")
         self.input_samples = QLineEdit("50")
+        self.input_samples.setFixedHeight(42)
+        self.input_samples.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        v_s.addWidget(lbl_s)
         v_s.addWidget(self.input_samples)
         grid_layout.addLayout(v_s)
 
         # Run Button
-        self.btn_run = QPushButton("⚡ Run Batch Simulation")
-        self.btn_run.setFixedHeight(38)
+        self.btn_run = QPushButton("⚡  Run Batch Simulation")
+        self.btn_run.setFixedHeight(44)
+        self.btn_run.setStyleSheet("font-size: 14px; font-weight: 700;")
         self.btn_run.clicked.connect(self.start_batch_analysis)
         grid_layout.addWidget(self.btn_run)
 
@@ -87,6 +101,7 @@ class AnalysisTab(QWidget):
 
         # Progress bar
         self.progress_bar = QProgressBar()
+        self.progress_bar.setFixedHeight(18)
         self.progress_bar.setVisible(False)
         layout.addWidget(self.progress_bar)
 
@@ -101,23 +116,26 @@ class AnalysisTab(QWidget):
             "HALS Efficiency (%)"
         ])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.table.setStyleSheet("font-size: 13px; font-weight: 500;")
         layout.addWidget(self.table)
 
         # Export Buttons Row
         export_layout = QHBoxLayout()
         self.lbl_status = QLabel("Ready to analyze.")
-        self.lbl_status.setStyleSheet("color: #94a3b8; font-weight: 600;")
+        self.lbl_status.setStyleSheet("color: #475569; font-weight: 600; font-size: 13px;")
         export_layout.addWidget(self.lbl_status)
         export_layout.addStretch()
 
-        self.btn_export_excel = QPushButton("📊 Export to Excel (.xlsx)")
+        self.btn_export_excel = QPushButton("📊  Export to Excel (.xlsx)")
         self.btn_export_excel.setObjectName("successButton")
+        self.btn_export_excel.setFixedHeight(42)
         self.btn_export_excel.setEnabled(False)
         self.btn_export_excel.clicked.connect(self.export_excel)
         export_layout.addWidget(self.btn_export_excel)
 
         self.btn_export_csv = QPushButton("Export to CSV")
         self.btn_export_csv.setObjectName("secondaryButton")
+        self.btn_export_csv.setFixedHeight(42)
         self.btn_export_csv.setEnabled(False)
         self.btn_export_csv.clicked.connect(self.export_csv)
         export_layout.addWidget(self.btn_export_csv)
@@ -129,7 +147,7 @@ class AnalysisTab(QWidget):
             hours = float(self.input_hours.text().strip())
             max_wt = float(self.input_max.text().strip())
             samples = int(self.input_samples.text().strip())
-            samples = max(5, min(samples, 500))  # Safe bounds
+            samples = max(5, min(samples, 500))
 
             self.btn_run.setEnabled(False)
             self.progress_bar.setVisible(True)
@@ -157,7 +175,6 @@ class AnalysisTab(QWidget):
         self.btn_export_csv.setEnabled(True)
         self.lbl_status.setText(f"Batch completed: {len(df)} discrete formulations simulated.")
 
-        # Populate table
         self.table.setRowCount(len(df))
         for row_idx, row in df.iterrows():
             self.table.setItem(row_idx, 0, QTableWidgetItem(f"{row['Stabilizer_wt_percent']:.4f}"))
