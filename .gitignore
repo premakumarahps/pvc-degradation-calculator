@@ -18,6 +18,8 @@ __pycache__/
 *$py.class
 *.so
 .Python
+*.spec
+out.txt
 env/
 venv/
 ENV/

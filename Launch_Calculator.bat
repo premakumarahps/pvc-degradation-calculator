@@ -2,7 +2,13 @@
 title PVC Photodegradation Kinetics & HALS Formulation Optimizer
 cd /d "%~dp0\pvc_calculator_app"
 
-echo Starting PVC Degradation & HALS Formulation Optimizer...
+if exist "dist\PVC_Degradation_Optimizer\PVC_Degradation_Optimizer.exe" (
+    echo Launching standalone executable...
+    start "" "dist\PVC_Degradation_Optimizer\PVC_Degradation_Optimizer.exe"
+    exit /b
+)
+
+echo Starting PVC Degradation & HALS Formulation Optimizer via Python...
 python main.py
 if errorlevel 1 (
     echo.
