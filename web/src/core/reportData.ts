@@ -36,7 +36,6 @@ export const PROJECT_METADATA = {
   subtitle: "Computational Kinetics Modeling, Denisov Cycle Simulation & Predictive Stabilization Software",
   academicModule: "MT2230 - Kinetics of Materials",
   institution: "Department of Materials Science & Engineering, University of Moratuwa",
-  grade: "B+ (3.0 C)",
   leadStudent: {
     index: "210494D",
     name: "Premakumara H.P.S.",

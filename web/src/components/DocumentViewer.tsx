@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { BookOpen, Presentation, ChevronLeft, ChevronRight, Download, CheckCircle2, Bookmark, FileText } from 'lucide-react';
+import { BookOpen, Presentation, ChevronLeft, ChevronRight, Download, CheckCircle2, Bookmark, FileText, Maximize2, X } from 'lucide-react';
 import { REPORT_CHAPTERS, PRESENTATION_SLIDES } from '../core/reportData';
 
 export const DocumentViewer: React.FC = () => {
-  const [docMode, setDocMode] = useState<'report' | 'slides'>('report');
+  const [docMode, setDocMode] = useState<'slides' | 'report'>('slides');
   const [selectedChapterId, setSelectedChapterId] = useState<string>(REPORT_CHAPTERS[0].id);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const activeChapter =
     REPORT_CHAPTERS.find((c) => c.id === selectedChapterId) || REPORT_CHAPTERS[0];
@@ -19,54 +20,206 @@ export const DocumentViewer: React.FC = () => {
     setCurrentSlideIndex((prev) => (prev - 1 + PRESENTATION_SLIDES.length) % PRESENTATION_SLIDES.length);
   };
 
+  const slideImagePath = `/slides/slide_${String(currentSlideIndex + 1).padStart(2, '0')}.png`;
+
   return (
-    <section id="report" className="py-12 bg-white border-b border-slate-200">
-      <div className="container space-y-8">
+    <section id="report" className="py-10 bg-white border-b border-slate-200">
+      <div className="container space-y-6">
         {/* Header & Mode Switcher */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold mb-1.5">
               <Bookmark className="w-3.5 h-3.5 text-purple-600" />
-              <span>Native Academic Reader</span>
+              <span>Authentic Academic Deliverables</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Interactive Research Report & Presentation Deck
+              Presentation Slide Deck &amp; 36-Page Thesis Reader
             </h2>
-            <p className="text-sm text-slate-600 mt-1">
-              Explore the complete 36-page University Thesis and 20-slide defense presentation seamlessly integrated into the web experience.
+            <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+              Review the original 20-slide defense presentation with full graphics and read the comprehensive research chapters.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <div className="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
               <button
-                onClick={() => setDocMode('report')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  docMode === 'report'
-                    ? 'bg-white text-sky-700 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>36-Page Report Reader</span>
-              </button>
-
-              <button
                 onClick={() => setDocMode('slides')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   docMode === 'slides'
                     ? 'bg-white text-purple-700 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <Presentation className="w-3.5 h-3.5" />
-                <span>20-Slide Slide Deck</span>
+                <span>20-Slide Defense Deck</span>
+              </button>
+
+              <button
+                onClick={() => setDocMode('report')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  docMode === 'report'
+                    ? 'bg-white text-sky-700 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>36-Page Thesis Reader</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mode 1: Interactive Report Reader */}
+        {/* Mode 1: Real Presentation Slide Viewer with High-Res Graphics */}
+        {docMode === 'slides' && (
+          <div className="space-y-4 animate-fade-in max-w-5xl mx-auto">
+            {/* Top Toolbar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-slate-100/90 border border-slate-200">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-md bg-purple-100 text-purple-800 font-mono text-xs font-bold border border-purple-200">
+                  Slide {currentSlide.slideNumber} of {PRESENTATION_SLIDES.length}
+                </span>
+                <span className="text-xs font-bold text-slate-800 hidden sm:inline">
+                  {currentSlide.title}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsFullScreen(true)}
+                  className="btn btn-secondary text-xs py-1.5 px-2.5 flex items-center gap-1"
+                  title="Expand to Fullscreen"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Zoom Slide</span>
+                </button>
+
+                <a
+                  href="/docs/PVC_Stabilization_Presentation_Slides.pdf"
+                  download
+                  className="btn btn-primary text-xs py-1.5 px-3"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download PDF Deck</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Main Graphical Slide Display */}
+            <div className="relative group rounded-2xl overflow-hidden bg-slate-900 border border-slate-300 shadow-xl flex items-center justify-center">
+              <img
+                src={slideImagePath}
+                alt={`Slide ${currentSlide.slideNumber}: ${currentSlide.title}`}
+                className="w-full h-auto max-h-[580px] object-contain cursor-pointer"
+                onClick={() => setIsFullScreen(true)}
+              />
+
+              {/* Prev / Next Overlay Buttons */}
+              <button
+                onClick={handlePrevSlide}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 opacity-80 group-hover:opacity-100"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              <button
+                onClick={handleNextSlide}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 opacity-80 group-hover:opacity-100"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Presenter Notes & Takeaway Card */}
+            <div className="card p-4 space-y-2 bg-slate-50/80 border-slate-200">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">
+                  Slide Content &amp; Presenter Notes
+                </span>
+                <span className="badge badge-purple text-[10px]">{currentSlide.category}</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                <strong>Presenter Takeaway: </strong> {currentSlide.takeaway}
+              </p>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {currentSlide.bullets.map((b, i) => (
+                  <span key={i} className="inline-flex items-center gap-1 text-[11px] text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+                    <span className="w-1 h-1 rounded-full bg-purple-500" />
+                    {b}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 20-Slide Thumbnail Strip Carousel */}
+            <div className="space-y-1.5 pt-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+                Slide Navigator (Click to Jump)
+              </span>
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+                {PRESENTATION_SLIDES.map((s, idx) => (
+                  <button
+                    key={s.slideNumber}
+                    onClick={() => setCurrentSlideIndex(idx)}
+                    className={`shrink-0 w-24 sm:w-28 rounded-lg overflow-hidden border-2 transition-all ${
+                      currentSlideIndex === idx
+                        ? 'border-purple-600 ring-2 ring-purple-300 shadow-md scale-105'
+                        : 'border-slate-200 opacity-60 hover:opacity-100 hover:border-slate-400'
+                    }`}
+                  >
+                    <img
+                      src={`/slides/slide_${String(s.slideNumber).padStart(2, '0')}.png`}
+                      alt={`Thumb ${s.slideNumber}`}
+                      className="w-full h-auto object-cover"
+                    />
+                    <div className="bg-slate-900 text-white text-[10px] py-0.5 text-center font-mono">
+                      #{s.slideNumber}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Fullscreen Modal Lightbox */}
+            {isFullScreen && (
+              <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-4">
+                <div className="w-full max-w-6xl flex justify-between items-center text-white mb-3">
+                  <span className="font-bold text-sm">
+                    Slide {currentSlide.slideNumber}: {currentSlide.title}
+                  </span>
+                  <button
+                    onClick={() => setIsFullScreen(false)}
+                    className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="relative max-w-6xl max-h-[85vh] flex items-center justify-center">
+                  <img
+                    src={slideImagePath}
+                    alt={`Slide ${currentSlide.slideNumber}`}
+                    className="max-w-full max-h-[85vh] object-contain rounded-xl"
+                  />
+                  <button
+                    onClick={handlePrevSlide}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 text-white hover:bg-black/90"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={handleNextSlide}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 text-white hover:bg-black/90"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Mode 2: Interactive 36-Page Report Reader with Real Figures */}
         {docMode === 'report' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in">
             {/* Chapters Navigation Sidebar */}
@@ -118,9 +271,9 @@ export const DocumentViewer: React.FC = () => {
                 })}
               </div>
 
-              {/* Quick Download Box */}
+              {/* Download Links */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 mt-4 space-y-2">
-                <p className="text-xs font-bold text-slate-800">Download Original Documents</p>
+                <p className="text-xs font-bold text-slate-800">Download Official Thesis Files</p>
                 <div className="flex flex-col gap-1.5">
                   <a
                     href="/docs/PVC_Photodegradation_Project_Report.pdf"
@@ -164,7 +317,7 @@ export const DocumentViewer: React.FC = () => {
                 </h3>
               </div>
 
-              {/* Executive Highlights */}
+              {/* Highlights */}
               <div className="p-4 rounded-xl bg-sky-50/50 border border-sky-100 space-y-2">
                 <p className="text-xs font-bold text-sky-900 uppercase tracking-wide">
                   Core Highlights
@@ -179,14 +332,50 @@ export const DocumentViewer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Main Content Paragraphs */}
+              {/* Main Content */}
               <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
                 {activeChapter.content.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
               </div>
 
-              {/* Formulas & Equations (if present) */}
+              {/* Embedded Real Figures for Chapter Context */}
+              {selectedChapterId === 'abstract-intro' && (
+                <div className="space-y-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <p className="text-xs font-bold text-slate-700">Figure 05: UV Degraded PVC Pipes in Field Service</p>
+                  <img
+                    src="/images/fig_pvc_pipes.png"
+                    alt="UV Degraded PVC Pipes"
+                    className="w-full max-h-72 object-contain rounded-lg border border-slate-200"
+                  />
+                  <p className="text-[11px] text-slate-500 italic text-center">
+                    Surface yellowing, embrittlement, and micro-cracking observed on uninhibited outdoor PVC pipes.
+                  </p>
+                </div>
+              )}
+
+              {selectedChapterId === 'experimental-validation' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="text-xs font-bold text-slate-700 mb-1">Figure 08: ASTM G154 Chamber</p>
+                    <img
+                      src="/images/fig_test_chamber.png"
+                      alt="ASTM G154 Test Chamber"
+                      className="w-full h-48 object-contain rounded-lg border border-slate-200 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-700 mb-1">Figure 08: FTIR Spectra Analysis</p>
+                    <img
+                      src="/images/fig_ftir_spectra.png"
+                      alt="FTIR Spectra of PVC"
+                      className="w-full h-48 object-contain rounded-lg border border-slate-200 bg-white"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Kinetic Equations */}
               {activeChapter.equations && activeChapter.equations.length > 0 && (
                 <div className="space-y-3 pt-2">
                   <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
@@ -203,91 +392,6 @@ export const DocumentViewer: React.FC = () => {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-        )}
-
-        {/* Mode 2: Interactive Slide Deck Viewer */}
-        {docMode === 'slides' && (
-          <div className="card space-y-6 max-w-4xl mx-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in">
-            {/* Top Slide Meta Bar */}
-            <div className="flex items-center justify-between border-b border-slate-700/80 pb-4">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-md bg-sky-500/20 text-sky-300 font-mono text-xs font-bold border border-sky-500/30">
-                  Slide {currentSlide.slideNumber} of {PRESENTATION_SLIDES.length}
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 text-[11px]">
-                  {currentSlide.category}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <a
-                  href="/docs/PVC_Stabilization_Presentation_Slides.pdf"
-                  download
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download PDF Deck (2.08 MB)</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Slide Body */}
-            <div className="min-h-[260px] flex flex-col justify-center space-y-4 py-4">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                {currentSlide.title}
-              </h3>
-
-              <div className="space-y-2.5 pt-2">
-                {currentSlide.bullets.map((b, i) => (
-                  <div key={i} className="flex items-start gap-3 text-sm sm:text-base text-slate-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0 mt-2" />
-                    <span>{b}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Slide Notes / Key Takeaway */}
-            <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-start gap-2.5 text-xs text-sky-200">
-              <span className="font-bold text-sky-400 shrink-0">Presenter Insight:</span>
-              <span>{currentSlide.takeaway}</span>
-            </div>
-
-            {/* Navigation Controls */}
-            <div className="flex items-center justify-between pt-2 border-t border-slate-700/80">
-              <button
-                onClick={handlePrevSlide}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <span>Previous Slide</span>
-              </button>
-
-              {/* Slide Indicator Dots */}
-              <div className="hidden sm:flex items-center gap-1">
-                {PRESENTATION_SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentSlideIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      currentSlideIndex === idx
-                        ? 'w-6 bg-sky-400'
-                        : 'bg-slate-700 hover:bg-slate-500'
-                    }`}
-                    title={`Jump to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={handleNextSlide}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-xs font-bold transition-colors"
-              >
-                <span>Next Slide</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         )}

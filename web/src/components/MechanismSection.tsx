@@ -228,6 +228,36 @@ export const MechanismSection: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Authentic Report Diagram: Figure 11 */}
+            <div className="card p-4 space-y-3 bg-white border border-slate-200">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                  Thesis Figure 11: Overall Photodegradation Mechanism with Rate Constants
+                </h4>
+                <span className="badge badge-red text-[10px]">Report Page 20</span>
+              </div>
+              <div className="flex flex-col lg:flex-row items-center gap-4">
+                <div className="w-full lg:w-3/5 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center">
+                  <img
+                    src="/images/fig_bare_mechanism.png"
+                    alt="Overall Photodegradation Mechanism with Rate Constants"
+                    className="max-h-72 object-contain"
+                  />
+                </div>
+                <div className="w-full lg:w-2/5 space-y-2 text-xs text-slate-600 leading-relaxed">
+                  <p>
+                    <strong>Chain Initiation &amp; Dehydrochlorination:</strong> UV photons excite the polymer chain, breaking C-Cl bonds and initiating alkyl radical (R'•) propagation.
+                  </p>
+                  <p>
+                    <strong>Corrosive HCl Evolution:</strong> Free chlorine radicals abstract hydrogens, triggering the rapid zipper reaction that evolves HCl gas and creates colored polyenes.
+                  </p>
+                  <div className="p-2.5 rounded-lg bg-red-50 text-red-900 border border-red-200">
+                    <strong>Critical Vulnerability:</strong> Without chemical intervention, uninhibited radical cascades lead to catastrophic surface yellowing and micro-cracking.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -348,6 +378,36 @@ export const MechanismSection: React.FC = () => {
                   <p className="text-xs font-bold text-slate-700">Peroxy Radicals [R'OO•]:</p>
                   <div className="math-block text-xs">
                     d[R'OO•]/dt = k₇[R'•] - k₈[R'OO•][PVC] - k₁[R'OO•][R-N-H] - k₂[R'OO•][R-N-OH] - k₄[R-N(O-R')][R'OO•]
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Authentic Report Diagram: Figure 12 */}
+            <div className="card p-4 space-y-3 bg-white border border-slate-200">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                  Thesis Figure 12: Reaction and Regeneration Mechanism of HALS with Rate Constants
+                </h4>
+                <span className="badge badge-green text-[10px]">Report Page 21</span>
+              </div>
+              <div className="flex flex-col lg:flex-row items-center gap-4">
+                <div className="w-full lg:w-3/5 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center">
+                  <img
+                    src="/images/fig_hals_denisov.png"
+                    alt="Reaction and Regeneration Mechanism of HALS with Rate Constants"
+                    className="max-h-72 object-contain"
+                  />
+                </div>
+                <div className="w-full lg:w-2/5 space-y-2 text-xs text-slate-600 leading-relaxed">
+                  <p>
+                    <strong>Radical Scavenging:</strong> HALS Tinuvin 770 secondary amine (&gt;NH) interrupts peroxy radicals (R'OO•) forming hydroxylamines (&gt;N-OH).
+                  </p>
+                  <p>
+                    <strong>Regenerative Cycle:</strong> Oxidation yields nitroxyl radicals (&gt;NO•), which trap polymer alkyl radicals (R'•) at near diffusion limits (k₃ = 1.2×10⁹ M⁻¹s⁻¹).
+                  </p>
+                  <div className="p-2.5 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200">
+                    <strong>Catalytic Efficiency:</strong> One HALS molecule intercepts up to 100 free radicals through cyclic regeneration, ensuring multi-year stability.
                   </div>
                 </div>
               </div>

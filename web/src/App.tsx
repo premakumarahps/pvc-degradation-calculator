@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SimulatorHub } from './components/Simulator/SimulatorHub';
@@ -12,41 +12,55 @@ import { Sliders, Layers, Activity, BookOpen, Download, ArrowRight, ArrowLeft } 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('simulator');
 
+  // Google-grade scroll reveal observer from 1_My_WebSite
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    const elements = document.querySelectorAll('.scroll-reveal');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [activeTab]);
+
   const mainTabs = [
     {
       id: 'simulator',
       label: 'Degradation Simulator',
       subtitle: 'Formulation Optimizer & ODE Solver',
-      icon: Sliders,
-      badge: 'Interactive Software'
+      icon: Sliders
     },
     {
       id: 'mechanisms',
       label: 'Reaction Mechanisms',
       subtitle: 'Bare PVC vs. HALS Denisov Cycle',
-      icon: Layers,
-      badge: 'Chemical Kinetics'
+      icon: Layers
     },
     {
       id: 'experimental',
       label: 'Experimental Validation',
       subtitle: 'ASTM G154 Tensile, Hardness & TGA',
-      icon: Activity,
-      badge: 'Empirical Data'
+      icon: Activity
     },
     {
       id: 'report',
       label: 'Thesis & Defense Deck',
       subtitle: '36-Page Report & 20-Slide Deck',
-      icon: BookOpen,
-      badge: 'Academic Reader'
+      icon: BookOpen
     },
     {
       id: 'downloads',
       label: 'Software & Downloads',
       subtitle: 'Standalone Windows .EXE & PDFs',
-      icon: Download,
-      badge: 'Deliverables'
+      icon: Download
     }
   ];
 
@@ -70,16 +84,16 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-sky-500/20">
-      {/* Top Floating Glassmorphism Navbar */}
+      {/* Top Floating Glassmorphism Navbar (Clean Single-Line Fit) */}
       <Navbar activeTab={activeTab} setActiveTab={handleTabChange} />
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* Luxury Hero with Ambient Mesh Orbs and Dynamic Typewriter */}
+        {/* Luxury Hero with Ambient Mesh Orbs, Sadun Portrait and Dynamic Typewriter */}
         <Hero onSelectTab={handleTabChange} />
 
-        {/* Central Executive Workspace Navigation Hub */}
-        <section id="workspace-hub" className="py-6 sm:py-8 border-y border-slate-200/80 bg-slate-50/60 sticky top-16 z-40 backdrop-blur-md">
+        {/* Central Executive Workspace Navigation Hub (NON-STICKY so it never disturbs scrolling) */}
+        <section id="workspace-hub" className="py-6 sm:py-8 border-y border-slate-200/80 bg-slate-50/70">
           <div className="container">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
               <div>
@@ -91,14 +105,14 @@ export const App: React.FC = () => {
                 </h2>
               </div>
               <div className="hidden md:flex items-center gap-2">
-                <span className="text-xs text-slate-500 font-medium">Domain:</span>
+                <span className="text-xs text-slate-500 font-medium">Active Domain:</span>
                 <span className="badge badge-blue text-xs font-bold">
                   {mainTabs.find((t) => t.id === activeTab)?.label}
                 </span>
               </div>
             </div>
 
-            {/* Segmented Domain Switcher (Matching 1_My_WebSite) */}
+            {/* Segmented Domain Switcher */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 bg-slate-200/70 p-1.5 rounded-2xl border border-slate-300/70 shadow-xs">
               {mainTabs.map((tab) => {
                 const Icon = tab.icon;
@@ -129,8 +143,8 @@ export const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Active Domain Workspace Viewport */}
-        <div className="py-8 min-h-[600px] animate-tab-fade">
+        {/* Active Domain Workspace Viewport (Unobstructed full viewing height) */}
+        <div className="py-6 min-h-[600px] animate-tab-fade">
           {activeTab === 'simulator' && <SimulatorHub />}
           {activeTab === 'mechanisms' && <MechanismSection />}
           {activeTab === 'experimental' && <ExperimentalData />}
@@ -138,7 +152,7 @@ export const App: React.FC = () => {
           {activeTab === 'downloads' && <DownloadHub />}
         </div>
 
-        {/* Comfortable Inter-Domain Quick Navigation Footer */}
+        {/* Inter-Domain Quick Navigation Footer */}
         <section className="py-8 bg-slate-50 border-t border-slate-200">
           <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
             <button
@@ -151,8 +165,8 @@ export const App: React.FC = () => {
 
             <div className="text-center">
               <div className="luxury-divider mx-auto mb-1.5" />
-              <p className="text-[11px] text-slate-400">
-                Premakumara H.P.S. • Department of Materials Science &amp; Engineering • University of Moratuwa
+              <p className="text-[11px] text-slate-500 font-medium">
+                Sadun Premakumara • Department of Materials Science &amp; Engineering • University of Moratuwa
               </p>
             </div>
 

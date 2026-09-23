@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
 
             <div className="pt-2">
               <span className="badge badge-green text-[10px]">
-                Module: MT2230 Kinetics of Materials • Grade B+
+                Module: MT2230 Kinetics of Materials • Computational Research
               </span>
             </div>
           </div>
