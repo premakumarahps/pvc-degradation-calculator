@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
     def init_ui(self, icon_path: str):
         # Central widget
         central_widget = QWidget()
-        central_widget.setStyleSheet("background-color: #f8fafc;")
+        central_widget.setObjectName("centralWidget")
         self.setCentralWidget(central_widget)
 
         root_layout = QVBoxLayout(central_widget)
@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
 
         # Tab Widget Container
         content_container = QWidget()
-        content_container.setStyleSheet("background-color: #f8fafc;")
+        content_container.setObjectName("contentContainer")
         content_layout = QVBoxLayout(content_container)
         content_layout.setContentsMargins(20, 16, 20, 14)
 
@@ -92,8 +92,8 @@ class MainWindow(QMainWindow):
 
         self.tabs.addTab(self.tab_calculator, "⚡  Formulation Optimizer")
         self.tabs.addTab(self.tab_plotter, "📈  Kinetics Plotter")
-        self.tabs.addTab(self.tab_analysis, "📊  Batch Sensitivity & Export")
-        self.tabs.addTab(self.tab_theory, "📖  Theory & Reaction Models")
+        self.tabs.addTab(self.tab_analysis, "📊  Batch Sensitivity and Export")
+        self.tabs.addTab(self.tab_theory, "📖  Theory and Reaction Models")
 
         content_layout.addWidget(self.tabs)
         root_layout.addWidget(content_container)

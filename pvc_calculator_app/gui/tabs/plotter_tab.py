@@ -1,11 +1,11 @@
 """
 Interactive Kinetics Plotter Tab with light professional Matplotlib Canvas.
-Simulates and visualizes all 8 chemical species over time.
+Simulates and visualizes all 8 chemical species over time with zero layout clipping.
 """
 
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QGroupBox, QCheckBox, QFileDialog, QMessageBox, QScrollArea, QFrame
+    QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QLineEdit,
+    QPushButton, QGroupBox, QCheckBox, QFileDialog, QMessageBox, QScrollArea, QFrame, QSizePolicy
 )
 from PyQt6.QtCore import Qt
 import matplotlib
@@ -29,122 +29,211 @@ class PlotterTab(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        self.setStyleSheet("background-color: #f8fafc;")
         main_layout = QHBoxLayout(self)
-        main_layout.setSpacing(18)
-        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(16)
+        main_layout.setContentsMargins(18, 16, 18, 16)
 
-        # Left Column: Controls (Width 340px)
-        ctrl_panel = QWidget()
-        ctrl_panel.setFixedWidth(340)
+        # ---------------------------------------------------------
+        # Left Column: Controls panel
+        # ---------------------------------------------------------
+        ctrl_panel = QFrame()
+        ctrl_panel.setFixedWidth(360)
+        ctrl_panel.setStyleSheet("background-color: #f8fafc; border: none;")
         ctrl_layout = QVBoxLayout(ctrl_panel)
         ctrl_layout.setContentsMargins(0, 0, 0, 0)
-        ctrl_layout.setSpacing(16)
+        ctrl_layout.setSpacing(10)
 
-        # Simulation Parameters Box
+        # Simulation Parameters Card
         param_group = QGroupBox("Simulation Parameters")
+        param_group.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         p_layout = QVBoxLayout(param_group)
-        p_layout.setSpacing(12)
-        p_layout.setContentsMargins(16, 20, 16, 16)
+        p_layout.setSpacing(8)
+        p_layout.setContentsMargins(14, 18, 14, 14)
 
         lbl_time = QLabel("Exposure Time (Outdoor Hours):")
-        lbl_time.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
+        lbl_time.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 12.5px;")
         self.input_plot_hours = QLineEdit("1500")
-        self.input_plot_hours.setFixedHeight(42)
-        self.input_plot_hours.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        self.input_plot_hours.setFixedHeight(36)
+        self.input_plot_hours.setStyleSheet("""
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 4px 10px;
+                font-size: 13.5px;
+                font-weight: 600;
+            }
+            QLineEdit:focus { border: 2px solid #0284c7; }
+        """)
         p_layout.addWidget(lbl_time)
         p_layout.addWidget(self.input_plot_hours)
 
         lbl_stab = QLabel("Stabilizer Dosage (wt.%):")
-        lbl_stab.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
+        lbl_stab.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 12.5px;")
         self.input_plot_stab = QLineEdit("0.11")
-        self.input_plot_stab.setFixedHeight(42)
-        self.input_plot_stab.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        self.input_plot_stab.setFixedHeight(36)
+        self.input_plot_stab.setStyleSheet("""
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 4px 10px;
+                font-size: 13.5px;
+                font-weight: 600;
+            }
+            QLineEdit:focus { border: 2px solid #0284c7; }
+        """)
         p_layout.addWidget(lbl_stab)
         p_layout.addWidget(self.input_plot_stab)
 
-        self.btn_run_plot = QPushButton("📈  Simulate & Plot Kinetics")
-        self.btn_run_plot.setFixedHeight(44)
-        self.btn_run_plot.setStyleSheet("font-size: 14px; font-weight: 700;")
+        self.btn_run_plot = QPushButton("📈  Simulate and Plot Kinetics")
+        self.btn_run_plot.setFixedHeight(38)
+        self.btn_run_plot.setStyleSheet("""
+            QPushButton {
+                background-color: #0284c7;
+                color: #ffffff;
+                border: 1px solid #0284c7;
+                border-radius: 6px;
+                font-weight: 700;
+                font-size: 13px;
+            }
+            QPushButton:hover { background-color: #0369a1; }
+            QPushButton:pressed { background-color: #075985; }
+        """)
         self.btn_run_plot.clicked.connect(self.run_simulation_and_plot)
         p_layout.addWidget(self.btn_run_plot)
 
         ctrl_layout.addWidget(param_group)
 
-        # Species Selector Box
+        # Species Selector Card
         species_group = QGroupBox("Chemical Species to Display")
         sp_layout = QVBoxLayout(species_group)
-        sp_layout.setSpacing(10)
-        sp_layout.setContentsMargins(16, 20, 16, 16)
+        sp_layout.setSpacing(8)
+        sp_layout.setContentsMargins(14, 18, 14, 14)
 
         # Quick preset buttons
         sel_btn_layout = QHBoxLayout()
+        sel_btn_layout.setSpacing(8)
+        btn_preset_qss = """
+            QPushButton {
+                background-color: #ffffff;
+                color: #334155;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+                padding: 4px 8px;
+            }
+            QPushButton:hover {
+                background-color: #f1f5f9;
+                border-color: #0284c7;
+                color: #0284c7;
+            }
+        """
         btn_all = QPushButton("Select All")
-        btn_all.setObjectName("secondaryButton")
-        btn_all.setFixedHeight(32)
+        btn_all.setFixedHeight(30)
+        btn_all.setStyleSheet(btn_preset_qss)
         btn_all.clicked.connect(self.select_all_species)
+
         btn_main = QPushButton("Key Species")
-        btn_main.setObjectName("secondaryButton")
-        btn_main.setFixedHeight(32)
+        btn_main.setFixedHeight(30)
+        btn_main.setStyleSheet(btn_preset_qss)
         btn_main.clicked.connect(self.select_key_species)
+
         sel_btn_layout.addWidget(btn_all)
         sel_btn_layout.addWidget(btn_main)
         sp_layout.addLayout(sel_btn_layout)
 
-        # Checkboxes for 8 species
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("background-color: transparent; border: none;")
-        scroll_content = QWidget()
-        scroll_layout = QVBoxLayout(scroll_content)
-        scroll_layout.setSpacing(10)
+        # 8 Species Checkboxes in a neat 2-Column Grid
+        grid_species = QGridLayout()
+        grid_species.setHorizontalSpacing(10)
+        grid_species.setVerticalSpacing(6)
 
-        for key in SPECIES_KEYS:
+        for idx, key in enumerate(SPECIES_KEYS):
             meta = SPECIES_METADATA[key]
             cb = QCheckBox(f"{meta['label']}")
-            cb.setStyleSheet(f"color: {meta['color']}; font-weight: 700; font-size: 13px;")
+            cb.setFixedHeight(22)
+            cb.setStyleSheet(f"QCheckBox {{ color: {meta['color']}; font-weight: 700; font-size: 11.5px; }}")
             if key in ["PVC", "R_N_H", "R_OO_rad"]:
                 cb.setChecked(True)
             self.checkboxes[key] = cb
-            scroll_layout.addWidget(cb)
+            row = idx // 2
+            col = idx % 2
+            grid_species.addWidget(cb, row, col)
 
-        scroll.setWidget(scroll_content)
-        sp_layout.addWidget(scroll)
+        sp_layout.addLayout(grid_species)
         ctrl_layout.addWidget(species_group)
 
         # Export Plot Button
         self.btn_export_plot = QPushButton("💾  Export Plot Image (.PNG)")
-        self.btn_export_plot.setObjectName("secondaryButton")
-        self.btn_export_plot.setFixedHeight(40)
+        self.btn_export_plot.setFixedHeight(38)
+        self.btn_export_plot.setStyleSheet("""
+            QPushButton {
+                background-color: #ffffff;
+                color: #334155;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                font-weight: 600;
+                font-size: 12.5px;
+            }
+            QPushButton:hover {
+                background-color: #f1f5f9;
+                border-color: #0284c7;
+                color: #0284c7;
+            }
+        """)
         self.btn_export_plot.clicked.connect(self.export_plot_image)
         ctrl_layout.addWidget(self.btn_export_plot)
         ctrl_layout.addStretch()
 
         main_layout.addWidget(ctrl_panel)
 
+        # ---------------------------------------------------------
         # Right Column: Matplotlib Embedded Canvas in Light Mode
+        # ---------------------------------------------------------
         plot_panel = QFrame()
         plot_panel.setStyleSheet("""
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 8px;
+            QFrame {
+                background-color: #ffffff;
+                border: 1.5px solid #e2e8f0;
+                border-radius: 8px;
+            }
         """)
         plot_layout = QVBoxLayout(plot_panel)
-        plot_layout.setContentsMargins(8, 8, 8, 8)
-        plot_layout.setSpacing(8)
+        plot_layout.setContentsMargins(10, 10, 10, 10)
+        plot_layout.setSpacing(6)
 
-        # Setup Matplotlib Figure with Light Theme
-        self.figure = Figure(figsize=(8, 6), facecolor="#ffffff")
+        # Setup Matplotlib Figure with Light Theme and ample margins for axis titles
+        self.figure = Figure(figsize=(7.5, 5.5), facecolor="#ffffff")
+        self.figure.subplots_adjust(bottom=0.15, left=0.10, right=0.96, top=0.91)
         self.canvas = FigureCanvasQTAgg(self.figure)
+        self.canvas.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.ax = self.figure.add_subplot(111)
         self.setup_light_axes()
 
-        # Matplotlib toolbar
+        # Matplotlib toolbar with light styling
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
         self.toolbar.setStyleSheet("""
-            QToolBar { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px; }
-            QToolButton { background-color: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 6px; margin: 2px; padding: 4px; }
-            QToolButton:hover { background-color: #e2e8f0; border-color: #0284c7; }
+            QToolBar {
+                background-color: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                padding: 2px 4px;
+            }
+            QToolButton {
+                background-color: transparent;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                margin: 1px;
+                padding: 4px;
+            }
+            QToolButton:hover {
+                background-color: #e2e8f0;
+                border-color: #cbd5e1;
+            }
         """)
 
         plot_layout.addWidget(self.toolbar)
@@ -157,7 +246,7 @@ class PlotterTab(QWidget):
 
     def setup_light_axes(self):
         self.ax.set_facecolor("#f8fafc")
-        self.ax.tick_params(colors="#475569", which="both", labelsize=10)
+        self.ax.tick_params(colors="#475569", which="both", labelsize=9.5)
         for spine in self.ax.spines.values():
             spine.set_color("#cbd5e1")
             spine.set_linewidth(1.2)
@@ -209,11 +298,11 @@ class PlotterTab(QWidget):
             self.ax.set_xlabel("Outdoor Weathering Equivalent Time (Hours)", color="#0f172a", fontsize=11, fontweight=700, labelpad=8)
             self.ax.set_ylabel("Normalized Concentration (Fraction)", color="#0f172a", fontsize=11, fontweight=700, labelpad=8)
             self.ax.set_title(
-                f"PVC Photodegradation Kinetics (Dosage: {stab_wt:.3f} wt.% Tinuvin 770)",
+                f"PVC Photodegradation Kinetics ({stab_wt:.3f} wt.% Tinuvin 770)",
                 color="#0f172a",
-                fontsize=13,
+                fontsize=11.5,
                 fontweight=700,
-                pad=12
+                pad=10
             )
 
             # Threshold line at 80%
@@ -228,8 +317,9 @@ class PlotterTab(QWidget):
                     fontsize=9.5,
                     framealpha=0.95
                 )
-                leg.get_frame().set_boxstyle("round,pad=0.5")
+                leg.get_frame().set_boxstyle("round,pad=0.4")
 
+            self.figure.subplots_adjust(bottom=0.15, left=0.10, right=0.96, top=0.91)
             self.canvas.draw()
 
         except Exception as e:

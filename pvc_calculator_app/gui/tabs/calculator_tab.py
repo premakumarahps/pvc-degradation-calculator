@@ -1,11 +1,11 @@
 """
 Optimum Stabilizer Calculator Tab.
-Light modern professional interface with large, spacious input controls.
+Clean light modern interface with scrollable container, vibrant buttons, and rock-solid layout.
 """
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
-    QLineEdit, QPushButton, QGroupBox, QFrame, QMessageBox
+    QLineEdit, QPushButton, QGroupBox, QFrame, QMessageBox, QScrollArea, QSizePolicy
 )
 from PyQt6.QtCore import Qt
 import time
@@ -20,179 +20,285 @@ class CalculatorTab(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        layout = QVBoxLayout(self)
-        layout.setSpacing(18)
-        layout.setContentsMargins(24, 22, 24, 22)
+        # Root layout with QScrollArea to prevent any squashing or overlapping
+        self.setStyleSheet("background-color: #f8fafc;")
+        root_layout = QVBoxLayout(self)
+        root_layout.setContentsMargins(0, 0, 0, 0)
+        root_layout.setSpacing(0)
 
-        # 1. Inputs Section
-        input_group = QGroupBox("Formulation & Lifespan Requirements")
-        grid = QGridLayout(input_group)
-        grid.setSpacing(14)
-        grid.setContentsMargins(18, 22, 18, 18)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setStyleSheet("QScrollArea { background-color: #f8fafc; border: none; }")
+        scroll.viewport().setStyleSheet("background-color: #f8fafc;")
 
-        # Row 0: Lifetime Input
-        lbl_lifetime = QLabel("Expected Outdoor Lifetime:")
-        lbl_lifetime.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 14px;")
+        content_widget = QWidget()
+        content_widget.setStyleSheet("background-color: #f8fafc;")
+        content_layout = QVBoxLayout(content_widget)
+        content_layout.setContentsMargins(18, 6, 18, 8)
+        content_layout.setSpacing(10)
+
+        # -------------------------------------------------------------
+        # Section 1: Inputs Card
+        # -------------------------------------------------------------
+        input_group = QGroupBox("Formulation and Lifespan Requirements")
+        input_layout = QVBoxLayout(input_group)
+        input_layout.setContentsMargins(14, 14, 14, 8)
+        input_layout.setSpacing(8)
+
+        # 3-Row Grid for Inputs
+        grid = QGridLayout()
+        grid.setHorizontalSpacing(16)
+        grid.setVerticalSpacing(6)
+
+        input_qss = """
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 4px 10px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            QLineEdit:focus {
+                border: 2px solid #0284c7;
+            }
+        """
+
+        # Row 0: Lifetime
+        lbl_life = QLabel("Expected Outdoor Lifetime:")
+        lbl_life.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
+        lbl_life.setFixedWidth(220)
         self.input_lifetime = QLineEdit("1500")
-        self.input_lifetime.setFixedHeight(44)
+        self.input_lifetime.setFixedHeight(34)
+        self.input_lifetime.setStyleSheet(input_qss)
         self.input_lifetime.setPlaceholderText("e.g. 1500")
-        self.input_lifetime.setStyleSheet("font-size: 15px; font-weight: 600; padding: 6px 12px;")
-        grid.addWidget(lbl_lifetime, 0, 0)
+        hint_life = QLabel("(Hours of accelerated outdoor weathering exposure)")
+        hint_life.setStyleSheet("color: #64748b; font-size: 12px;")
+
+        grid.addWidget(lbl_life, 0, 0)
         grid.addWidget(self.input_lifetime, 0, 1)
+        grid.addWidget(hint_life, 0, 2)
 
-        lbl_lifetime_hint = QLabel("(Hours of accelerated outdoor weathering exposure)")
-        lbl_lifetime_hint.setStyleSheet("color: #64748b; font-size: 12px;")
-        grid.addWidget(lbl_lifetime_hint, 0, 2)
-
-        # Row 1: Max Dosage Input
-        lbl_max_stab = QLabel("Max Stabilizer Bound (wt.%):")
-        lbl_max_stab.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 14px;")
+        # Row 1: Max Stabilizer Bound
+        lbl_max = QLabel("Max Stabilizer Bound (wt.%):")
+        lbl_max.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
+        lbl_max.setFixedWidth(220)
         self.input_max_stab = QLineEdit(str(DEFAULT_MAX_STABILIZER_CONC * STABILIZER_WT_MULTIPLIER))
-        self.input_max_stab.setFixedHeight(44)
+        self.input_max_stab.setFixedHeight(34)
+        self.input_max_stab.setStyleSheet(input_qss)
         self.input_max_stab.setPlaceholderText("e.g. 0.8")
-        self.input_max_stab.setStyleSheet("font-size: 15px; font-weight: 600; padding: 6px 12px;")
-        grid.addWidget(lbl_max_stab, 1, 0)
+        hint_max = QLabel("(Standard industrial addition limit: 0.2 – 1.0 wt.%)")
+        hint_max.setStyleSheet("color: #64748b; font-size: 12px;")
+
+        grid.addWidget(lbl_max, 1, 0)
         grid.addWidget(self.input_max_stab, 1, 1)
+        grid.addWidget(hint_max, 1, 2)
 
-        lbl_max_hint = QLabel("(Typical industrial addition limit: 0.2 – 1.0 wt.%)")
-        lbl_max_hint.setStyleSheet("color: #64748b; font-size: 12px;")
-        grid.addWidget(lbl_max_hint, 1, 2)
-
-        # Row 2: Target Retention Input
+        # Row 2: Target Retention
         lbl_target = QLabel("Target PVC Retention (%):")
-        lbl_target.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 14px;")
+        lbl_target.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
+        lbl_target.setFixedWidth(220)
         self.input_target = QLineEdit(str(int(DEFAULT_TARGET_PVC_RETENTION * 100)))
-        self.input_target.setFixedHeight(44)
+        self.input_target.setFixedHeight(34)
+        self.input_target.setStyleSheet(input_qss)
         self.input_target.setPlaceholderText("e.g. 80")
-        self.input_target.setStyleSheet("font-size: 15px; font-weight: 600; padding: 6px 12px;")
+        hint_target = QLabel("(Critical integrity threshold before yellowing/cracking)")
+        hint_target.setStyleSheet("color: #64748b; font-size: 12px;")
+
         grid.addWidget(lbl_target, 2, 0)
         grid.addWidget(self.input_target, 2, 1)
+        grid.addWidget(hint_target, 2, 2)
 
-        lbl_target_hint = QLabel("(Critical integrity threshold before discoloration/embrittlement)")
-        lbl_target_hint.setStyleSheet("color: #64748b; font-size: 12px;")
-        grid.addWidget(lbl_target_hint, 2, 2)
+        input_layout.addLayout(grid)
 
-        # Row 3: Quick Presets
+        # Presets Row
         preset_layout = QHBoxLayout()
-        preset_label = QLabel("Quick Presets:")
-        preset_label.setStyleSheet("color: #475569; font-weight: 700; font-size: 13px;")
-        preset_layout.addWidget(preset_label)
+        preset_layout.setSpacing(10)
+        lbl_preset = QLabel("Quick Presets:")
+        lbl_preset.setStyleSheet("font-weight: 700; color: #475569; font-size: 12px;")
+        lbl_preset.setFixedWidth(100)
+        preset_layout.addWidget(lbl_preset)
+
+        preset_qss = """
+            QPushButton {
+                background-color: #ffffff;
+                color: #334155;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            QPushButton:hover {
+                background-color: #f1f5f9;
+                border-color: #0284c7;
+                color: #0284c7;
+            }
+            QPushButton:pressed {
+                background-color: #e2e8f0;
+            }
+        """
 
         for hours in [500, 1000, 1500, 1800]:
             btn = QPushButton(f"{hours} Hours")
-            btn.setObjectName("secondaryButton")
-            btn.setFixedHeight(34)
-            btn.setFixedWidth(115)
-            btn.setStyleSheet("font-size: 13px; font-weight: 600;")
+            btn.setFixedHeight(30)
+            btn.setFixedWidth(105)
+            btn.setStyleSheet(preset_qss)
             btn.clicked.connect(lambda checked, h=hours: self.input_lifetime.setText(str(h)))
             preset_layout.addWidget(btn)
         preset_layout.addStretch()
-        grid.addLayout(preset_layout, 3, 0, 1, 3)
+        input_layout.addLayout(preset_layout)
 
-        # Row 4: Action Buttons
+        # Action Buttons Row
         btn_layout = QHBoxLayout()
+        btn_layout.setSpacing(12)
+
         self.btn_calculate = QPushButton("⚡  Calculate Optimal Stabilizer Dosage")
-        self.btn_calculate.setFixedHeight(48)
-        self.btn_calculate.setStyleSheet("font-size: 15px; font-weight: 700; letter-spacing: 0.2px;")
+        self.btn_calculate.setFixedHeight(38)
+        self.btn_calculate.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.btn_calculate.setStyleSheet("""
+            QPushButton {
+                background-color: #0284c7;
+                color: #ffffff;
+                border: 1px solid #0284c7;
+                border-radius: 6px;
+                font-size: 13.5px;
+                font-weight: 700;
+                letter-spacing: 0.2px;
+            }
+            QPushButton:hover {
+                background-color: #0369a1;
+                border-color: #0369a1;
+            }
+            QPushButton:pressed {
+                background-color: #075985;
+            }
+        """)
         self.btn_calculate.clicked.connect(self.run_calculation)
         btn_layout.addWidget(self.btn_calculate, stretch=3)
 
         self.btn_clear = QPushButton("Reset Defaults")
-        self.btn_clear.setObjectName("secondaryButton")
-        self.btn_clear.setFixedHeight(48)
-        self.btn_clear.setStyleSheet("font-size: 14px; font-weight: 600;")
+        self.btn_clear.setFixedHeight(38)
+        self.btn_clear.setFixedWidth(140)
+        self.btn_clear.setStyleSheet("""
+            QPushButton {
+                background-color: #ffffff;
+                color: #475569;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                font-size: 12.5px;
+                font-weight: 600;
+            }
+            QPushButton:hover {
+                background-color: #f1f5f9;
+                border-color: #94a3b8;
+                color: #0f172a;
+            }
+            QPushButton:pressed {
+                background-color: #e2e8f0;
+            }
+        """)
         self.btn_clear.clicked.connect(self.reset_defaults)
         btn_layout.addWidget(self.btn_clear, stretch=1)
 
-        grid.addLayout(btn_layout, 4, 0, 1, 3)
-        layout.addWidget(input_group)
+        input_layout.addLayout(btn_layout)
+        content_layout.addWidget(input_group)
 
-        # 2. Results Section Card
-        self.result_card = QGroupBox("Prediction & Formulation Recommendation")
+        # -------------------------------------------------------------
+        # Section 2: Results Card
+        # -------------------------------------------------------------
+        self.result_card = QGroupBox("Prediction and Formulation Recommendation")
         res_layout = QVBoxLayout(self.result_card)
-        res_layout.setSpacing(14)
-        res_layout.setContentsMargins(18, 22, 18, 18)
+        res_layout.setContentsMargins(14, 14, 14, 8)
+        res_layout.setSpacing(8)
 
-        self.status_banner = QLabel("Enter desired lifetime above and click 'Calculate Optimal Stabilizer Dosage'")
+        # Status Banner
+        self.status_banner = QLabel("Enter requirements above and click 'Calculate Optimal Stabilizer Dosage'")
+        self.status_banner.setMinimumHeight(38)
         self.status_banner.setStyleSheet("""
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             color: #475569;
-            font-size: 14px;
+            font-size: 12.5px;
             font-weight: 600;
-            padding: 14px 18px;
-            border-radius: 8px;
-            border: 1.5px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
         """)
         self.status_banner.setWordWrap(True)
         res_layout.addWidget(self.status_banner)
 
-        # Metrics display row
-        self.metrics_frame = QFrame()
-        self.metrics_frame.setStyleSheet("""
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 14px;
-        """)
-        metrics_layout = QHBoxLayout(self.metrics_frame)
-        metrics_layout.setSpacing(12)
+        # Metrics display row (4 Cards)
+        metrics_container = QWidget()
+        metrics_container.setStyleSheet("background-color: transparent;")
+        metrics_layout = QHBoxLayout(metrics_container)
+        metrics_layout.setContentsMargins(0, 0, 0, 0)
+        metrics_layout.setSpacing(8)
 
-        self.metric_wt = self.create_metric_widget("Recommended Stabilizer", "-- wt.%")
-        self.metric_dosage = self.create_metric_widget("Compounding Ratio", "-- g / kg PVC")
-        self.metric_retention = self.create_metric_widget("Projected PVC Retention", "-- %")
-        self.metric_compute = self.create_metric_widget("Solver Execution", "-- ms")
+        self.metric_wt = self.create_metric_card("Recommended Stabilizer", "-- wt.%")
+        self.metric_dosage = self.create_metric_card("Compounding Ratio", "-- g / kg PVC")
+        self.metric_retention = self.create_metric_card("Projected PVC Retention", "-- %")
+        self.metric_compute = self.create_metric_card("Solver Execution", "-- ms")
 
         metrics_layout.addWidget(self.metric_wt)
         metrics_layout.addWidget(self.metric_dosage)
         metrics_layout.addWidget(self.metric_retention)
         metrics_layout.addWidget(self.metric_compute)
-        res_layout.addWidget(self.metrics_frame)
+        res_layout.addWidget(metrics_container)
 
-        # Detailed Chemical Guidance Card
+        # Chemical Mechanism Description Card
         self.txt_details = QLabel(
-            "<b>Chemical Mechanism Rationale:</b><br>"
-            "Tinuvin 770 acts through the catalytic, regenerative <b>Denisov Cycle</b>. Under UV exposure, sterically "
-            "hindered amine groups (>NH) trap photo-generated peroxy radicals (ROO*), converting into nitroxyl radicals (>NO*). "
-            "These rapidly scavenge polymer alkyl radicals (R*) at near diffusion-controlled rates (k3 = 1.2 × 10⁹ M⁻¹s⁻¹), "
-            "preventing destructive auto-oxidation chain scissions."
+            "<b>Chemical Mechanism Rationale:</b> "
+            "Tinuvin 770 operates through the catalytic, regenerative <b>Denisov Cycle</b>. Under UV radiation, "
+            "hindered amine groups (>NH) scavenge photo-generated peroxy radicals (ROO*), forming nitroxyl radicals (>NO*) "
+            "which intercept polymer alkyl radicals (R*) at near diffusion-controlled rates (k3 = 1.2 × 10⁹ M⁻¹s⁻¹), "
+            "suppressing auto-oxidation chain scission."
         )
         self.txt_details.setStyleSheet("""
-            background-color: #ffffff;
+            background-color: #f8fafc;
             color: #475569;
-            line-height: 150%;
-            padding: 12px 16px;
+            line-height: 135%;
+            padding: 8px 12px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 13px;
+            border-radius: 6px;
+            font-size: 11.5px;
         """)
         self.txt_details.setWordWrap(True)
         res_layout.addWidget(self.txt_details)
 
-        layout.addWidget(self.result_card)
-        layout.addStretch()
+        content_layout.addWidget(self.result_card)
 
-    def create_metric_widget(self, title: str, default_val: str) -> QWidget:
-        box = QFrame()
-        box.setStyleSheet("""
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 10px;
+        scroll.setWidget(content_widget)
+        root_layout.addWidget(scroll)
+
+    def create_metric_card(self, title: str, default_val: str) -> QFrame:
+        card = QFrame()
+        card.setObjectName("metricCard")
+        card.setMinimumHeight(76)
+        card.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        card.setStyleSheet("""
+            QFrame#metricCard {
+                background-color: #ffffff;
+                border: 1.5px solid #e2e8f0;
+                border-radius: 8px;
+            }
         """)
-        box_layout = QVBoxLayout(box)
-        box_layout.setContentsMargins(4, 4, 4, 4)
-        box_layout.setSpacing(4)
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(12, 10, 12, 10)
+        card_layout.setSpacing(4)
+
         lbl_t = QLabel(title)
-        lbl_t.setStyleSheet("font-size: 12px; color: #64748b; font-weight: 600; border: none; background: transparent;")
+        lbl_t.setStyleSheet("font-size: 11.5px; color: #64748b; font-weight: 600; border: none; background: transparent;")
         lbl_v = QLabel(default_val)
         lbl_v.setStyleSheet("font-size: 18px; color: #0284c7; font-weight: 700; border: none; background: transparent;")
         lbl_v.setObjectName("valueLabel")
-        box_layout.addWidget(lbl_t)
-        box_layout.addWidget(lbl_v)
-        return box
 
-    def set_metric_value(self, metric_widget: QWidget, value: str, color: str = "#0284c7"):
-        lbl = metric_widget.findChild(QLabel, "valueLabel")
+        card_layout.addWidget(lbl_t)
+        card_layout.addWidget(lbl_v)
+        return card
+
+    def set_metric_value(self, card: QFrame, value: str, color: str = "#0284c7"):
+        lbl = card.findChild(QLabel, "valueLabel")
         if lbl:
             lbl.setText(value)
             lbl.setStyleSheet(f"font-size: 18px; color: {color}; font-weight: 700; border: none; background: transparent;")
@@ -229,8 +335,8 @@ class CalculatorTab(QWidget):
                     color: #15803d;
                     font-size: 14px;
                     font-weight: 700;
-                    padding: 14px 18px;
-                    border-radius: 8px;
+                    padding: 12px 16px;
+                    border-radius: 6px;
                     border: 1.5px solid #86efac;
                 """)
                 self.set_metric_value(self.metric_wt, "0.0000 wt.%", "#16a34a")
@@ -239,15 +345,15 @@ class CalculatorTab(QWidget):
 
             elif result.status == OptimizationStatus.OPTIMUM_FOUND:
                 rec_wt = result.recommended_wt_percent
-                g_per_kg = rec_wt * 10.0  # wt% * 10 = g / kg
+                g_per_kg = rec_wt * 10.0
                 self.status_banner.setText(f"🎯  OPTIMAL DOSAGE FOUND: Add {rec_wt:.4f} wt.% of Tinuvin 770 HALS stabilizer.")
                 self.status_banner.setStyleSheet("""
                     background-color: #f0fdf4;
                     color: #166534;
-                    font-size: 15px;
+                    font-size: 14px;
                     font-weight: 700;
-                    padding: 14px 18px;
-                    border-radius: 8px;
+                    padding: 12px 16px;
+                    border-radius: 6px;
                     border: 1.5px solid #86efac;
                 """)
                 self.set_metric_value(self.metric_wt, f"{rec_wt:.4f} wt.%", "#0284c7")
@@ -261,8 +367,8 @@ class CalculatorTab(QWidget):
                     color: #92400e;
                     font-size: 14px;
                     font-weight: 700;
-                    padding: 14px 18px;
-                    border-radius: 8px;
+                    padding: 12px 16px;
+                    border-radius: 6px;
                     border: 1.5px solid #fde68a;
                 """)
                 self.set_metric_value(self.metric_wt, "Exceeded", "#d97706")
@@ -278,13 +384,13 @@ class CalculatorTab(QWidget):
         self.input_target.setText(str(int(DEFAULT_TARGET_PVC_RETENTION * 100)))
         self.status_banner.setText("Defaults restored. Click 'Calculate Optimal Stabilizer Dosage'.")
         self.status_banner.setStyleSheet("""
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             color: #475569;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
-            padding: 14px 18px;
-            border-radius: 8px;
-            border: 1.5px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
         """)
         self.set_metric_value(self.metric_wt, "-- wt.%")
         self.set_metric_value(self.metric_dosage, "-- g / kg PVC")

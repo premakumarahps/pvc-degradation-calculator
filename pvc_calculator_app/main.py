@@ -67,14 +67,34 @@ def run_cli(args):
 
 
 def run_gui():
-    """Launches the PyQt6 Graphical User Interface."""
+    """Launches the PyQt6 Graphical User Interface with an enforced Light Modern Theme."""
     from PyQt6.QtWidgets import QApplication
+    from PyQt6.QtGui import QPalette, QColor
     from PyQt6.QtCore import Qt
     from gui.main_window import MainWindow
     from gui.theme import LIGHT_MODERN_STYLESHEET
 
     app = QApplication(sys.argv)
     app.setApplicationName("PVC Degradation Optimizer")
+    app.setStyle("Fusion")
+
+    # Enforce pure light modern palette across all platforms
+    palette = QPalette()
+    palette.setColor(QPalette.ColorRole.Window, QColor("#f8fafc"))
+    palette.setColor(QPalette.ColorRole.WindowText, QColor("#0f172a"))
+    palette.setColor(QPalette.ColorRole.Base, QColor("#ffffff"))
+    palette.setColor(QPalette.ColorRole.AlternateBase, QColor("#f1f5f9"))
+    palette.setColor(QPalette.ColorRole.ToolTipBase, QColor("#ffffff"))
+    palette.setColor(QPalette.ColorRole.ToolTipText, QColor("#0f172a"))
+    palette.setColor(QPalette.ColorRole.Text, QColor("#0f172a"))
+    palette.setColor(QPalette.ColorRole.Button, QColor("#ffffff"))
+    palette.setColor(QPalette.ColorRole.ButtonText, QColor("#0f172a"))
+    palette.setColor(QPalette.ColorRole.BrightText, QColor("#ef4444"))
+    palette.setColor(QPalette.ColorRole.Link, QColor("#0284c7"))
+    palette.setColor(QPalette.ColorRole.Highlight, QColor("#0284c7"))
+    palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#ffffff"))
+    app.setPalette(palette)
+
     app.setStyleSheet(LIGHT_MODERN_STYLESHEET)
 
     window = MainWindow()

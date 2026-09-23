@@ -60,10 +60,21 @@ class AnalysisTab(QWidget):
         # Hours
         v_h = QVBoxLayout()
         lbl_h = QLabel("Outdoor Exposure (Hours):")
-        lbl_h.setStyleSheet("font-weight: 700; color: #0f172a;")
+        lbl_h.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
         self.input_hours = QLineEdit("1500")
-        self.input_hours.setFixedHeight(42)
-        self.input_hours.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        self.input_hours.setFixedHeight(38)
+        self.input_hours.setStyleSheet("""
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            QLineEdit:focus { border: 2px solid #0284c7; }
+        """)
         v_h.addWidget(lbl_h)
         v_h.addWidget(self.input_hours)
         grid_layout.addLayout(v_h)
@@ -71,10 +82,21 @@ class AnalysisTab(QWidget):
         # Max Dosage
         v_m = QVBoxLayout()
         lbl_m = QLabel("Max Stabilizer (wt.%):")
-        lbl_m.setStyleSheet("font-weight: 700; color: #0f172a;")
+        lbl_m.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
         self.input_max = QLineEdit("0.8")
-        self.input_max.setFixedHeight(42)
-        self.input_max.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        self.input_max.setFixedHeight(38)
+        self.input_max.setStyleSheet("""
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            QLineEdit:focus { border: 2px solid #0284c7; }
+        """)
         v_m.addWidget(lbl_m)
         v_m.addWidget(self.input_max)
         grid_layout.addLayout(v_m)
@@ -82,26 +104,64 @@ class AnalysisTab(QWidget):
         # Samples
         v_s = QVBoxLayout()
         lbl_s = QLabel("Sample Resolutions:")
-        lbl_s.setStyleSheet("font-weight: 700; color: #0f172a;")
+        lbl_s.setStyleSheet("font-weight: 700; color: #0f172a; font-size: 13px;")
         self.input_samples = QLineEdit("50")
-        self.input_samples.setFixedHeight(42)
-        self.input_samples.setStyleSheet("font-size: 14px; font-weight: 600; padding: 6px 12px;")
+        self.input_samples.setFixedHeight(38)
+        self.input_samples.setStyleSheet("""
+            QLineEdit {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            QLineEdit:focus { border: 2px solid #0284c7; }
+        """)
         v_s.addWidget(lbl_s)
         v_s.addWidget(self.input_samples)
         grid_layout.addLayout(v_s)
 
-        # Run Button
+        # Run Button aligned with inputs
+        v_btn = QVBoxLayout()
+        lbl_spacer = QLabel("")
+        lbl_spacer.setFixedHeight(18)
         self.btn_run = QPushButton("⚡  Run Batch Simulation")
-        self.btn_run.setFixedHeight(44)
-        self.btn_run.setStyleSheet("font-size: 14px; font-weight: 700;")
+        self.btn_run.setFixedHeight(38)
+        self.btn_run.setStyleSheet("""
+            QPushButton {
+                background-color: #0284c7;
+                color: #ffffff;
+                border: 1px solid #0284c7;
+                border-radius: 6px;
+                font-size: 13.5px;
+                font-weight: 700;
+                padding: 0 18px;
+            }
+            QPushButton:hover {
+                background-color: #0369a1;
+                border-color: #0369a1;
+            }
+            QPushButton:pressed {
+                background-color: #075985;
+            }
+            QPushButton:disabled {
+                background-color: #e2e8f0;
+                color: #94a3b8;
+                border: 1px solid #cbd5e1;
+            }
+        """)
         self.btn_run.clicked.connect(self.start_batch_analysis)
-        grid_layout.addWidget(self.btn_run)
+        v_btn.addWidget(lbl_spacer)
+        v_btn.addWidget(self.btn_run)
+        grid_layout.addLayout(v_btn)
 
         layout.addWidget(ctrl_group)
 
         # Progress bar
         self.progress_bar = QProgressBar()
-        self.progress_bar.setFixedHeight(18)
+        self.progress_bar.setFixedHeight(16)
         self.progress_bar.setVisible(False)
         layout.addWidget(self.progress_bar)
 
@@ -116,7 +176,25 @@ class AnalysisTab(QWidget):
             "HALS Efficiency (%)"
         ])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.table.setStyleSheet("font-size: 13px; font-weight: 500;")
+        self.table.setStyleSheet("""
+            QTableWidget {
+                background-color: #ffffff;
+                color: #0f172a;
+                border: 1.5px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 13px;
+                gridline-color: #f1f5f9;
+            }
+            QHeaderView::section {
+                background-color: #f8fafc;
+                color: #334155;
+                font-weight: 700;
+                font-size: 12px;
+                padding: 8px;
+                border: none;
+                border-bottom: 2px solid #e2e8f0;
+            }
+        """)
         layout.addWidget(self.table)
 
         # Export Buttons Row
@@ -127,16 +205,55 @@ class AnalysisTab(QWidget):
         export_layout.addStretch()
 
         self.btn_export_excel = QPushButton("📊  Export to Excel (.xlsx)")
-        self.btn_export_excel.setObjectName("successButton")
-        self.btn_export_excel.setFixedHeight(42)
+        self.btn_export_excel.setFixedHeight(40)
         self.btn_export_excel.setEnabled(False)
+        self.btn_export_excel.setStyleSheet("""
+            QPushButton {
+                background-color: #10b981;
+                color: #ffffff;
+                border: 1px solid #10b981;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 700;
+                padding: 0 16px;
+            }
+            QPushButton:hover {
+                background-color: #059669;
+                border-color: #059669;
+            }
+            QPushButton:disabled {
+                background-color: #f1f5f9;
+                color: #94a3b8;
+                border: 1px solid #e2e8f0;
+            }
+        """)
         self.btn_export_excel.clicked.connect(self.export_excel)
         export_layout.addWidget(self.btn_export_excel)
 
         self.btn_export_csv = QPushButton("Export to CSV")
-        self.btn_export_csv.setObjectName("secondaryButton")
-        self.btn_export_csv.setFixedHeight(42)
+        self.btn_export_csv.setFixedHeight(40)
         self.btn_export_csv.setEnabled(False)
+        self.btn_export_csv.setStyleSheet("""
+            QPushButton {
+                background-color: #ffffff;
+                color: #334155;
+                border: 1.5px solid #cbd5e1;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                padding: 0 16px;
+            }
+            QPushButton:hover {
+                background-color: #f1f5f9;
+                border-color: #0284c7;
+                color: #0284c7;
+            }
+            QPushButton:disabled {
+                background-color: #f8fafc;
+                color: #cbd5e1;
+                border: 1px solid #e2e8f0;
+            }
+        """)
         self.btn_export_csv.clicked.connect(self.export_csv)
         export_layout.addWidget(self.btn_export_csv)
 
