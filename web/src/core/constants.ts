@@ -2,7 +2,7 @@
  * Constants and chemical species definitions for the PVC Photodegradation and HALS Stabilization Model.
  * Synthesized from University Research: "Optimizing UV Stabilization in PVC using HALS"
  * University of Moratuwa - MT2230 Kinetics of Materials
- * Group 1 | Student 210494D (Premakumara H.P.S.)
+ * Group 1 | Premakumara H.P.S. (Sadun)
  */
 
 export interface SpeciesMeta {

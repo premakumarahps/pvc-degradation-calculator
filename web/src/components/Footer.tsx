@@ -61,7 +61,7 @@ export const Footer: React.FC = () => {
               ))}
             </div>
             <p className="text-[11px] text-sky-400 pt-1">
-              ★ Premakumara H.P.S. (210494D) - Lead Software Developer & Kinetics Analyst
+              ★ Sadun Premakumara (Premakumara H.P.S.) - Lead Software Developer & Kinetics Analyst
             </p>
           </div>
 

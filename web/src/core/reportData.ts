@@ -37,8 +37,7 @@ export const PROJECT_METADATA = {
   academicModule: "MT2230 - Kinetics of Materials",
   institution: "Department of Materials Science & Engineering, University of Moratuwa",
   leadStudent: {
-    index: "210494D",
-    name: "Premakumara H.P.S.",
+    name: "Sadun Premakumara (Premakumara H.P.S.)",
     role: "Python Software Developer (Degradation Calculator) & Kinetics Analyst",
     portfolioUrl: "https://github.com/premakumarahps"
   },
@@ -51,7 +50,7 @@ export const PROJECT_METADATA = {
 };
 
 export const TEAM_MEMBERS: TeamMember[] = [
-  { index: "210494D", name: "PREMAKUMARA H.P.S.", role: "Software Developer & Kinetics Analyst", isLeadAuthor: true },
+  { index: "Lead", name: "PREMAKUMARA H.P.S. (Sadun)", role: "Software Developer & Kinetics Analyst", isLeadAuthor: true },
   { index: "210042R", name: "ANJANA E.A.O.", role: "Materials Characterization & FTIR Review" },
   { index: "210061A", name: "BANDARA H.M.K.D.", role: "Polymer Degradation Chemistry" },
   { index: "210070B", name: "BIBULEWELA P.A.C.", role: "Additive Formulation & Literature" },
@@ -312,7 +311,7 @@ export const PRESENTATION_SLIDES: SlideItem[] = [
       "Optimizing UV Stabilization in PVC using HALS",
       "University of Moratuwa - Department of Materials Science & Engineering",
       "Module MT2230 - Kinetics of Materials",
-      "Group 1 | Sadun Premakumara (210494D) Lead Software Developer"
+      "Group 1 | Sadun Premakumara - Lead Software Developer & Kinetics Analyst"
     ],
     takeaway: "Formal defense of the computational kinetics model and PVC degradation software."
   },

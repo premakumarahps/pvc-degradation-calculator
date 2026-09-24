@@ -20,12 +20,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
     <header className="sticky top-0 z-50 glass-panel border-b border-slate-200/80 shadow-xs h-16">
       <div className="container h-full flex items-center justify-between">
-        {/* Brand with Real University of Moratuwa Crest */}
+        {/* Brand with Dedicated PVC Calculator Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-white p-1 border border-slate-200 shadow-xs flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-white p-0.5 border border-slate-200 shadow-xs flex items-center justify-center shrink-0 overflow-hidden">
             <img
-              src="/images/uom_crest.png"
-              alt="University of Moratuwa Emblem"
+              src="/images/calculator_logo.png"
+              alt="PVC UV Degradation Calculator Logo"
               className="w-full h-full object-contain"
             />
           </div>
