@@ -33,10 +33,10 @@ export const DocumentViewer: React.FC = () => {
               <span>Authentic Academic Deliverables</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Presentation Slide Deck &amp; 36-Page Thesis Reader
+              Presentation Slides &amp; Project Report
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-              Review the original 20-slide defense presentation with full graphics and read the comprehensive research chapters.
+              Review the original defense presentation with full graphics and read the comprehensive research chapters.
             </p>
           </div>
 
@@ -51,7 +51,7 @@ export const DocumentViewer: React.FC = () => {
                 }`}
               >
                 <Presentation className="w-3.5 h-3.5" />
-                <span>20-Slide Defense Deck</span>
+                <span>Presentation Slides</span>
               </button>
 
               <button
@@ -63,7 +63,7 @@ export const DocumentViewer: React.FC = () => {
                 }`}
               >
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>36-Page Thesis Reader</span>
+                <span>Project Report</span>
               </button>
             </div>
           </div>

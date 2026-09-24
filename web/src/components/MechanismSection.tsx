@@ -92,7 +92,7 @@ export const MechanismSection: React.FC = () => {
             Mechanisms of PVC Photodegradation vs. HALS Stabilization
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            Detailed chemical walkthrough from the 36-page University Project Report contrasting
+            Detailed chemical walkthrough from the University Project Report contrasting
             uninhibited radical zip-elimination with the catalytic regenerative Denisov Cycle.
           </p>
 

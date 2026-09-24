@@ -86,7 +86,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="#report" className="hover:text-white transition-colors">
-                  36-Page Report & 20-Slide Deck
+                  Project Report &amp; Defense Deck
                 </a>
               </li>
               <li>

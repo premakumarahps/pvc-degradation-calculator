@@ -15,12 +15,12 @@ export const Hero: React.FC<HeroProps> = ({ onSelectTab }) => {
       <div className="absolute top-16 left-1/3 -translate-x-1/2 w-[400px] md:w-[580px] h-[240px] md:h-[340px] bg-emerald-400/15 rounded-full blur-[90px] -z-10 opacity-40 pointer-events-none animate-mesh-float-reverse" />
 
       <div className="space-y-6 sm:space-y-7 max-w-4xl mx-auto z-10">
-        {/* Academic Institution Pill */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-sky-200 bg-sky-50/80 px-4 py-1.5 text-xs sm:text-sm font-semibold text-sky-900 backdrop-blur-sm shadow-xs animate-fade-in-up">
-          <GraduationCap className="w-4 h-4 text-sky-600" />
+        {/* Academic Institution Pill - Clean & Responsive on Mobile */}
+        <div className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 rounded-2xl sm:rounded-full border border-sky-200 bg-sky-50/80 px-3.5 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-sky-900 backdrop-blur-sm shadow-xs animate-fade-in-up text-center">
+          <GraduationCap className="w-4 h-4 text-sky-600 shrink-0" />
           <span>University of Moratuwa</span>
-          <span className="text-sky-300">•</span>
-          <span>Department of Materials Science &amp; Engineering</span>
+          <span className="text-sky-300 hidden sm:inline">•</span>
+          <span className="hidden sm:inline">Department of Materials Science &amp; Engineering</span>
           <span className="text-sky-300">•</span>
           <span className="text-sky-700 font-medium">MT2230 Kinetics of Materials</span>
         </div>
@@ -85,7 +85,7 @@ export const Hero: React.FC<HeroProps> = ({ onSelectTab }) => {
             onClick={() => onSelectTab('report')}
             className="btn btn-secondary h-11 px-5 hover-lift"
           >
-            <span>Read 36-Page Thesis &amp; Slides</span>
+            <span>Read Project Report &amp; Slides</span>
           </button>
         </div>
 

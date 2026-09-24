@@ -16,12 +16,12 @@ export const DownloadHub: React.FC = () => {
     {
       id: 'report-pdf',
       title: 'University Research Report',
-      badge: 'Academic Thesis (36 Pages)',
+      badge: 'Academic Research Report',
       badgeColor: 'badge-blue',
       icon: FileText,
       format: 'Adobe PDF (983 KB)',
       url: '/docs/PVC_Photodegradation_Project_Report.pdf',
-      desc: 'Complete 36-page report: introduction, photodegradation mechanisms, Denisov cycle ODE derivations, ASTM G154 data, and references.'
+      desc: 'Complete project report: introduction, photodegradation mechanisms, Denisov cycle ODE derivations, ASTM G154 data, and references.'
     },
     {
       id: 'report-docx',
@@ -36,7 +36,7 @@ export const DownloadHub: React.FC = () => {
     {
       id: 'slides-pdf',
       title: 'Project Defense Slide Deck',
-      badge: 'Presentation Slides (20 Slides)',
+      badge: 'Defense Presentation Deck',
       badgeColor: 'badge-amber',
       icon: Presentation,
       format: 'Presentation PDF (2.08 MB)',

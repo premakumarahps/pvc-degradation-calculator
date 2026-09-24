@@ -52,8 +52,8 @@ export const App: React.FC = () => {
     },
     {
       id: 'report',
-      label: 'Thesis & Defense Deck',
-      subtitle: '36-Page Report & 20-Slide Deck',
+      label: 'Report & Defense Deck',
+      subtitle: 'Project Report & Presentation Slides',
       icon: BookOpen
     },
     {
@@ -113,7 +113,7 @@ export const App: React.FC = () => {
             </div>
 
             {/* Segmented Domain Switcher */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 bg-slate-200/70 p-1.5 rounded-2xl border border-slate-300/70 shadow-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 bg-slate-200/70 p-1.5 rounded-2xl border border-slate-300/70 shadow-xs">
               {mainTabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -133,7 +133,7 @@ export const App: React.FC = () => {
                         <span className="font-bold text-xs sm:text-sm tracking-tight">{tab.label}</span>
                       </div>
                     </div>
-                    <span className="text-[11px] text-slate-400 line-clamp-1 hidden sm:block">
+                    <span className="text-[11px] text-slate-400 line-clamp-1 block">
                       {tab.subtitle}
                     </span>
                   </button>

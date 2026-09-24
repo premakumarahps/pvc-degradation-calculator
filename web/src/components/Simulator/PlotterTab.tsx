@@ -132,7 +132,7 @@ export const PlotterTab: React.FC = () => {
     plugins: {
       legend: {
         position: 'top' as const,
-        labels: { boxWidth: 12, font: { size: 11 } }
+        labels: { boxWidth: 10, font: { size: 10 }, padding: 6 }
       },
       tooltip: {
         callbacks: {
@@ -147,19 +147,28 @@ export const PlotterTab: React.FC = () => {
     },
     scales: {
       x: {
-        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 11 } },
-        grid: { color: '#f1f5f9' }
+        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 10 } },
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          maxTicksLimit: 6,
+          maxRotation: 0,
+          autoSkip: true,
+          font: { size: 10 }
+        }
       },
       y: {
         type: useLogScale ? ('logarithmic' as const) : ('linear' as const),
         title: {
           display: true,
-          text: useLogScale ? 'Concentration (Logarithmic Scale)' : 'Concentration (Normalized Fraction)',
-          font: { size: 11 }
+          text: useLogScale ? 'Concentration (Log)' : 'Concentration (Fraction)',
+          font: { size: 10 }
         },
         min: useLogScale ? 1e-15 : 0.0,
         max: useLogScale ? 2.0 : 1.05,
-        grid: { color: '#f1f5f9' }
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          font: { size: 10 }
+        }
       }
     }
   };
@@ -295,8 +304,8 @@ export const PlotterTab: React.FC = () => {
       </div>
 
       {/* Main Chart Card */}
-      <div className="card space-y-3">
-        <div className="h-[420px] w-full p-2">
+      <div className="card space-y-3 p-3 sm:p-6">
+        <div className="h-[300px] sm:h-[420px] w-full p-0 sm:p-2">
           <Line ref={chartRef} data={chartData} options={chartOptions} />
         </div>
 

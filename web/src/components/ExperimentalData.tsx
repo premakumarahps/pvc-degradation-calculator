@@ -97,7 +97,7 @@ export const ExperimentalData: React.FC = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top' as const, labels: { boxWidth: 12, font: { size: 11 } } },
+      legend: { position: 'top' as const, labels: { boxWidth: 10, font: { size: 10 }, padding: 6 } },
       tooltip: {
         callbacks: {
           label: (context: any) => `${context.dataset.label}: ${context.parsed.y}`
@@ -105,8 +105,14 @@ export const ExperimentalData: React.FC = () => {
       }
     },
     scales: {
-      x: { grid: { color: '#f1f5f9' } },
-      y: { grid: { color: '#f1f5f9' } }
+      x: {
+        grid: { color: '#f1f5f9' },
+        ticks: { maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } }
+      },
+      y: {
+        grid: { color: '#f1f5f9' },
+        ticks: { font: { size: 10 } }
+      }
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Layers, Download, Sliders, Menu, X, Activity } from 'lucide-react';
 
 interface NavbarProps {
@@ -8,6 +8,31 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      // Only trigger hide after passing initial threshold
+      if (currentScrollY > 60) {
+        if (currentScrollY > lastScrollY && !mobileMenuOpen) {
+          // Scrolling DOWN -> Hide top bar
+          setVisible(false);
+        } else {
+          // Scrolling UP -> Reveal top bar
+          setVisible(true);
+        }
+      } else {
+        // At the very top -> Always visible
+        setVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, mobileMenuOpen]);
 
   const navItems = [
     { id: 'simulator', label: 'Simulator', icon: Sliders },
@@ -18,10 +43,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-slate-200/80 shadow-xs h-16">
+    <header
+      className={`sticky top-0 z-50 glass-panel border-b border-slate-200/80 shadow-xs h-16 transition-transform duration-300 ${
+        visible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
       <div className="container h-full flex items-center justify-between">
-        {/* Brand with Dedicated PVC Calculator Logo */}
-        <div className="flex items-center gap-3">
+        {/* Brand with Dedicated PVC Calculator Logo on White Background */}
+        <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-white p-0.5 border border-slate-200 shadow-xs flex items-center justify-center shrink-0 overflow-hidden">
             <img
               src="/images/calculator_logo.png"
@@ -29,16 +58,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               className="w-full h-full object-contain"
             />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight whitespace-nowrap">
-                PVC UV-Stabilization Suite
-              </span>
-              <span className="badge badge-blue text-[10px] hidden md:inline-flex">
-                UoM Materials Engineering
-              </span>
-            </div>
-          </div>
+          <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight whitespace-nowrap">
+            PVC UV-Stabilization Suite
+          </span>
         </div>
 
         {/* Desktop Navigation Links - Fits cleanly in single line */}

@@ -101,7 +101,7 @@ export const OptimizerTab: React.FC = () => {
     plugins: {
       legend: {
         position: 'top' as const,
-        labels: { boxWidth: 12, font: { size: 11 } }
+        labels: { boxWidth: 10, font: { size: 10 }, padding: 8 }
       },
       tooltip: {
         callbacks: {
@@ -112,14 +112,23 @@ export const OptimizerTab: React.FC = () => {
     },
     scales: {
       x: {
-        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 11 } },
-        grid: { color: '#f1f5f9' }
+        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 10 } },
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          maxTicksLimit: 6,
+          maxRotation: 0,
+          autoSkip: true,
+          font: { size: 10 }
+        }
       },
       y: {
-        title: { display: true, text: 'PVC Retention (Fraction)', font: { size: 11 } },
+        title: { display: true, text: 'PVC Retention (Fraction)', font: { size: 10 } },
         min: 0.65,
         max: 1.02,
-        grid: { color: '#f1f5f9' }
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          font: { size: 10 }
+        }
       }
     }
   };

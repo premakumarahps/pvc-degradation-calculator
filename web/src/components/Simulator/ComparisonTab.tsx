@@ -106,7 +106,7 @@ export const ComparisonTab: React.FC = () => {
     plugins: {
       legend: {
         position: 'top' as const,
-        labels: { boxWidth: 12, font: { size: 11 } }
+        labels: { boxWidth: 10, font: { size: 10 }, padding: 8 }
       },
       tooltip: {
         callbacks: {
@@ -117,14 +117,23 @@ export const ComparisonTab: React.FC = () => {
     },
     scales: {
       x: {
-        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 11 } },
-        grid: { color: '#f1f5f9' }
+        title: { display: true, text: 'Simulated Outdoor Exposure (Hours)', font: { size: 10 } },
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          maxTicksLimit: 6,
+          maxRotation: 0,
+          autoSkip: true,
+          font: { size: 10 }
+        }
       },
       y: {
-        title: { display: true, text: 'PVC Retention (Fraction)', font: { size: 11 } },
+        title: { display: true, text: 'PVC Retention (Fraction)', font: { size: 10 } },
         min: 0.45,
         max: 1.02,
-        grid: { color: '#f1f5f9' }
+        grid: { color: '#f1f5f9' },
+        ticks: {
+          font: { size: 10 }
+        }
       }
     }
   };
@@ -163,11 +172,11 @@ export const ComparisonTab: React.FC = () => {
 
         {/* Custom Formulation Slider */}
         <div className="space-y-1.5">
-          <div className="flex justify-between items-center text-xs font-medium">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1.5 text-xs font-medium">
             <label className="text-slate-700 font-semibold">
               Adjust Custom Formulation Dosage:
             </label>
-            <span className="font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded">
+            <span className="font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded self-start sm:self-auto">
               {customDosage.toFixed(2)} wt.% ({ (customDosage * 10).toFixed(1) } g/kg PVC)
             </span>
           </div>
@@ -183,8 +192,8 @@ export const ComparisonTab: React.FC = () => {
       </div>
 
       {/* Main Comparative Graph */}
-      <div className="card space-y-3">
-        <div className="h-[400px] w-full p-2">
+      <div className="card space-y-3 p-3 sm:p-6">
+        <div className="h-[300px] sm:h-[400px] w-full p-0 sm:p-2">
           <Line data={chartData} options={chartOptions} />
         </div>
 
