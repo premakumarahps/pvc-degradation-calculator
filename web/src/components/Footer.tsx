@@ -49,13 +49,19 @@ export const Footer: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1.5 text-xs text-slate-400">
               {TEAM_MEMBERS.map((member) => (
                 <div key={member.index} className="flex items-center gap-1.5">
-                  <span className="font-mono text-slate-500 text-[11px]">{member.index}</span>
+                  <span
+                    className={`font-mono text-[11px] ${
+                      member.isLeadAuthor ? 'text-sky-400 font-bold' : 'text-slate-500'
+                    }`}
+                  >
+                    {member.index}
+                  </span>
                   <span
                     className={
-                      member.isLeadAuthor ? 'text-sky-300 font-semibold' : 'text-slate-300'
+                      member.isLeadAuthor ? 'text-sky-300 font-bold' : 'text-slate-300'
                     }
                   >
-                    {member.name.split(' ')[0]}
+                    {member.shortName || member.name.split(' ')[0]}
                   </span>
                 </div>
               ))}

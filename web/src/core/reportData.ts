@@ -7,8 +7,10 @@
 export interface TeamMember {
   index: string;
   name: string;
+  shortName?: string;
   role?: string;
   isLeadAuthor?: boolean;
+  isGroupLead?: boolean;
 }
 
 export interface ReportChapter {
@@ -50,15 +52,15 @@ export const PROJECT_METADATA = {
 };
 
 export const TEAM_MEMBERS: TeamMember[] = [
-  { index: "Lead", name: "PREMAKUMARA H.P.S. (Sadun)", role: "Software Developer & Kinetics Analyst", isLeadAuthor: true },
-  { index: "210042R", name: "ANJANA E.A.O.", role: "Materials Characterization & FTIR Review" },
-  { index: "210061A", name: "BANDARA H.M.K.D.", role: "Polymer Degradation Chemistry" },
-  { index: "210070B", name: "BIBULEWELA P.A.C.", role: "Additive Formulation & Literature" },
-  { index: "210281X", name: "KAUSHIKA K.K.G.", role: "Mechanical Testing Analysis" },
-  { index: "210347G", name: "MADHUBHASHINEE H.A.W.R.", role: "Thermal Kinetics & TGA Data" },
-  { index: "210381E", name: "MAYOORATHAN K.", role: "Reaction Kinetics & Rate Equations" },
-  { index: "210640A", name: "THEMIYA K.L.", role: "UV Weathering Simulation & Standards" },
-  { index: "210722D", name: "WIJESOORIYA W.A.A.D.", role: "Documentation & Technical Reporting" }
+  { index: "210494D", name: "PREMAKUMARA H.P.S. (Sadun)", shortName: "PREMAKUMARA", role: "Software Developer & Kinetics Analyst", isLeadAuthor: true },
+  { index: "210042R", name: "ANJANA E.A.O.", shortName: "ANJANA", role: "Materials Characterization & FTIR Review" },
+  { index: "210061A", name: "BANDARA H.M.K.D.", shortName: "BANDARA", role: "Polymer Degradation Chemistry" },
+  { index: "210070B", name: "BIBULEWELA P.A.C.", shortName: "BIBULEWELA", role: "Additive Formulation & Literature" },
+  { index: "210281X", name: "KAUSHIKA K.K.G.", shortName: "KAUSHIKA", role: "Mechanical Testing Analysis" },
+  { index: "210347G", name: "MADHUBHASHINEE H.A.W.R.", shortName: "MADHUBHASHINEE", role: "Thermal Kinetics & TGA Data" },
+  { index: "210381E", name: "MAYOORATHAN K.", shortName: "MAYOORATHAN", role: "Reaction Kinetics & Rate Equations" },
+  { index: "210640A", name: "THEMIYA K.L.", shortName: "THEMIYA (Lead)", role: "Group Lead • UV Weathering Simulation & Standards", isGroupLead: true },
+  { index: "210722D", name: "WIJESOORIYA W.A.A.D.", shortName: "WIJESOORIYA", role: "Documentation & Technical Reporting" }
 ];
 
 export const EXPERIMENTAL_DATASETS = {
