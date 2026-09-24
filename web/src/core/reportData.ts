@@ -137,6 +137,18 @@ export const REPORT_CHAPTERS: ReportChapter[] = [
       "Polyvinyl Chloride (PVC) is one of the most widely manufactured thermoplastics worldwide, essential for municipal water supply pipes, exterior architectural cladding, window profiles, and automotive trims.",
       "However, when exposed to solar UV radiation, PVC absorbs photons in the UV-B spectrum (280–320 nm). Although pure PVC theoretically has poor absorption above 250 nm, structural imperfections—such as allylic chlorides, internal double bonds, catalyst residues, and hydroperoxides—act as intense chromophores.",
       "These defects trigger homolytic cleavage of the labile C-Cl bond, ebullating free chlorine radicals (Cl•) and leaving carbon-centered polyenyl radicals (R'•). The ensuing cascade releases gaseous hydrogen chloride (HCl) in a progressive 'zipper-like' elimination reaction."
+    ],
+    equations: [
+      {
+        title: "Planck-Einstein UV Photon Cleavage Relation",
+        latex: "E_{photon} = h\\nu = \\frac{hc}{\\lambda} \\ge E_{C-Cl} \\approx 327\\ \\text{kJ/mol}",
+        explanation: "UV-B photons (λ ≤ 365 nm) possess sufficient quantum energy to cause homolytic dissociation of defective C-Cl bonds."
+      },
+      {
+        title: "Quantum Yield of Photodehydrochlorination",
+        latex: "\\Phi_{\\text{HCl}} = \\frac{\\text{Moles of HCl Released}}{\\text{Moles of UV Photons Absorbed}} > 10",
+        explanation: "Quantifies zip-chain length; uninhibited PVC exhibits cascading catalytic unzipping yielding tens of HCl molecules per photon."
+      }
     ]
   },
   {
@@ -192,22 +204,22 @@ export const REPORT_CHAPTERS: ReportChapter[] = [
     equations: [
       {
         title: "Denisov Step 1: Hydroxylamine Formation",
-        latex: ">NH + R'OO^\\bullet \\xrightarrow{k_1} >N-OH + \\text{ketone}",
+        latex: ">\\!\\text{NH} + R'OO^\\bullet \\xrightarrow{k_1} >\\!\\text{N-OH} + \\text{Ketone}",
         explanation: "Active HALS scavenges harmful peroxy radicals, mitigating photo-oxidation."
       },
       {
         title: "Denisov Step 2: Nitroxyl Radical Formation",
-        latex: ">N-OH + R'OO^\\bullet \\xrightarrow{k_2} >NO^\\bullet + R'OOH",
+        latex: ">\\!\\text{N-OH} + R'OO^\\bullet \\xrightarrow{k_2} >\\!\\text{NO}^\\bullet + R'OOH",
         explanation: "Hydroxylamine oxidizes to form the persistent, catalytic nitroxyl radical."
       },
       {
         title: "Denisov Step 3: Diffusion-Controlled Alkyl Trapping",
-        latex: ">NO^\\bullet + R'^\\bullet \\xrightarrow{k_3} >N-O-R'",
+        latex: ">\\!\\text{NO}^\\bullet + R'^\\bullet \\xrightarrow{k_3} >\\!\\text{N-O-R'}",
         explanation: "Nitroxyl radical terminates polymer alkyl radicals at diffusion rates (k3 = 1.2 × 10⁹ M⁻¹s⁻¹)."
       },
       {
         title: "Denisov Step 4 & 5: Catalytic Regeneration",
-        latex: ">N-O-R' \\xrightarrow{k_5} >NH + \\text{olefin} \\quad | \\quad >N-O-R' + R'OO^\\bullet \\xrightarrow{k_4} >NO^\\bullet + \\text{products}",
+        latex: ">\\!\\text{N-O-R'} \\xrightarrow{k_5} >\\!\\text{NH} + \\text{Olefin} \\quad \\big| \\quad >\\!\\text{N-O-R'} + R'OO^\\bullet \\xrightarrow{k_4} >\\!\\text{NO}^\\bullet + \\text{Products}",
         explanation: "Thermal and radical cleavage regenerates >NH and >NO•, allowing one HALS molecule to neutralize dozens of radicals."
       }
     ],
@@ -268,6 +280,23 @@ export const REPORT_CHAPTERS: ReportChapter[] = [
       "Samples removed at 24, 48, 72, 96, 120, 144, and 168 hours were subjected to standardized mechanical and spectroscopic characterization.",
       "FTIR spectra demonstrated that uninhibited PVC exhibits broad absorption bands at 1715–1735 cm⁻¹, corresponding to ketone and carboxylic acid carbonyl groups formed during oxidative scission. Stabilized formulations showed marked suppression of these peaks.",
       "Tensile and elongation tests proved that Tinuvin 770 prevented premature micro-crack coalescence, maintaining structural elasticity and impact resistance essential for construction pipes and fittings."
+    ],
+    equations: [
+      {
+        title: "FTIR Carbonyl Index (CI)",
+        latex: "\\text{CI} = \\frac{A_{1720}}{A_{1428}}",
+        explanation: "Ratio of photo-oxidative carbonyl (C=O) band at 1720 cm⁻¹ to the invariant structural reference C-H bending peak at 1428 cm⁻¹."
+      },
+      {
+        title: "Tensile Strength Retention Ratio",
+        latex: "\\text{Retention}_{\\sigma} = \\left( \\frac{\\sigma_t}{\\sigma_0} \\right) \\times 100\\%",
+        explanation: "Monitors residual load-bearing capacity over weathering duration t, where baseline pristine PVC exhibits σ₀ = 52.0 MPa."
+      },
+      {
+        title: "Elongation at Break Ductility Metric",
+        latex: "\\text{Retention}_{\\varepsilon} = \\left( \\frac{\\varepsilon_t}{\\varepsilon_0} \\right) \\times 100\\%",
+        explanation: "Quantifies preservation of ductile plastic flow (ε₀ = 88.8%), preventing catastrophic sudden brittle failure."
+      }
     ]
   },
   {

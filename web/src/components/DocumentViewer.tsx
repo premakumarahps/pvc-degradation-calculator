@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, Presentation, ChevronLeft, ChevronRight, Download, CheckCircle2, Bookmark, FileText, Maximize2, X } from 'lucide-react';
 import { REPORT_CHAPTERS, PRESENTATION_SLIDES } from '../core/reportData';
+import { MathView } from './MathView';
 
 export const DocumentViewer: React.FC = () => {
   const [docMode, setDocMode] = useState<'slides' | 'report'>('slides');
@@ -375,18 +376,38 @@ export const DocumentViewer: React.FC = () => {
                 </div>
               )}
 
-              {/* Kinetic Equations */}
+              {/* Kinetic Equations in True Mathematical Notation */}
               {activeChapter.equations && activeChapter.equations.length > 0 && (
-                <div className="space-y-3 pt-2">
-                  <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                    Governing Kinetic Equations
-                  </h4>
-                  <div className="grid grid-cols-1 gap-3">
+                <div className="space-y-3 pt-3 border-t border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-sky-600" />
+                      Governing Mathematical &amp; Kinetic Equations
+                    </h4>
+                    <span className="text-[11px] text-slate-400 font-medium">
+                      {activeChapter.equations.length} Formulation {activeChapter.equations.length === 1 ? 'Rule' : 'Rules'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-3.5">
                     {activeChapter.equations.map((eq, i) => (
-                      <div key={i} className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
-                        <p className="text-xs font-bold text-slate-800">{eq.title}</p>
-                        <div className="math-block text-xs">{eq.latex}</div>
-                        <p className="text-[11px] text-slate-500">{eq.explanation}</p>
+                      <div
+                        key={i}
+                        className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2 hover:border-sky-300 transition-colors"
+                      >
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                          <p className="text-xs font-bold text-slate-900 tracking-tight">
+                            {eq.title}
+                          </p>
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 border border-sky-100">
+                            Eq. {activeChapter.number}.{i + 1}
+                          </span>
+                        </div>
+                        <div className="py-2.5 px-3 rounded-lg bg-slate-50/80 border border-slate-100 overflow-x-auto text-center flex items-center justify-center">
+                          <MathView math={eq.latex} block={true} className="text-sm text-slate-900" />
+                        </div>
+                        <p className="text-xs text-slate-600 leading-relaxed pt-0.5">
+                          {eq.explanation}
+                        </p>
                       </div>
                     ))}
                   </div>
