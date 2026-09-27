@@ -125,7 +125,12 @@ export const Footer: React.FC = () => {
               <span>GitHub Repository</span>
               <ExternalLink className="w-3 h-3" />
             </a>
-            <a href="/" className="hover:text-slate-300 flex items-center gap-1">
+            <a
+              href="https://premakumarahps.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-slate-300 flex items-center gap-1"
+            >
               <span>Main Portfolio</span>
               <ExternalLink className="w-3 h-3" />
             </a>
